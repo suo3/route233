@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase/client';
+import { getAdminClient } from '@/lib/supabase/client';
 import { preScreenInquiry } from '@/lib/gatekeeper';
 import { notify } from '@/lib/notifications';
 
 export async function POST(request: Request) {
   try {
+    const adminSupabase = getAdminClient();
     const body = await request.json();
     const { customer_id, category, source_url, description, vin, images } = body;
 
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
     const screenResult = await preScreenInquiry({ category, description, vin, source_url });
 
     // Insert the inquiry with status based on screening
-    const { data, error } = await supabase
+    const { data, error } = await adminSupabase
       .from('route233_inquiries')
       .insert([
         {
