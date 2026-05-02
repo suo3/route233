@@ -60,6 +60,11 @@ export default function InquiryForm() {
       });
 
       const json = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(json.error || 'Failed to submit request. Please try again.');
+      }
+
       setResult({
         success: json.success,
         message: json.message,

@@ -24,16 +24,24 @@ export default function LoginPage() {
     if (error) {
       setMessage(error.message);
     } else if (user) {
+      console.log('Login successful for:', user.email);
+      
       // Fetch profile to check role
-      const { data: profile } = await supabase
+      const { data: profile, error: profileError } = await supabase
         .from('route233_profiles')
         .select('role')
         .eq('id', user.id)
         .single();
 
-      if (profile?.role === 'admin') {
+      if (profileError) {
+        console.error('Profile fetch error:', profileError);
+        // Fallback: Default to track if profile check fails
+        window.location.href = '/track';
+      } else if (profile?.role === 'admin') {
+        console.log('Admin detected, redirecting...');
         window.location.href = '/admin/dashboard';
       } else {
+        console.log('Customer detected, redirecting...');
         window.location.href = '/track';
       }
     }
