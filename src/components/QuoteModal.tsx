@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button, Input, Label } from '@/components/ui';
+import { supabase } from '@/lib/supabase/client';
 
 interface QuoteModalProps {
   inquiry: {
@@ -14,16 +15,50 @@ interface QuoteModalProps {
 
 export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalProps) {
   const [loading, setLoading] = useState(false);
+  const [hsCodes, setHsCodes] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     base_cost_usd: '',
     shipping_cost_usd: '',
     service_fee_usd: '25.00',
     customs_estimate_usd: '0.00',
-    exchange_rate: '13.80',
+    exchange_rate: '12.50',
     notes: '',
   });
 
+  useEffect(() => {
+    const initData = async () => {
+      // Fetch HS Codes
+      const { data: hs } = await supabase.from('route233_hs_codes').select('*');
+      if (hs) setHsCodes(hs);
+
+      // Fetch Exchange Rate
+      const { data: config } = await supabase
+        .from('route233_config')
+        .select('value')
+        .eq('key', 'exchange_rate')
+        .single();
+      
+      if (config?.value) {
+        setFormData(prev => ({ ...prev, exchange_rate: (config.value as any).usd_to_ghs.toString() }));
+      }
+    };
+    initData();
+  }, []);
+
   if (!inquiry) return null;
+
+  const handleHsCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const item = hsCodes.find(h => h.id === e.target.value);
+    if (item && formData.base_cost_usd) {
+      const base = Number(formData.base_cost_usd);
+      const totalTaxRate = (Number(item.duty_rate_percentage) + Number(item.vat_percentage) + Number(item.other_levies_percentage)) / 100;
+      setFormData({
+        ...formData,
+        customs_estimate_usd: (base * totalTaxRate).toFixed(2),
+        notes: `Applied HS Code: ${item.hs_code} (${item.item_name})`
+      });
+    }
+  };
 
   const totalUSD = 
     Number(formData.base_cost_usd || 0) + 
@@ -61,17 +96,29 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in">
-      <div className="bg-slate-900 border border-slate-800 w-full max-w-xl rounded-3xl overflow-hidden shadow-2xl">
+      <div className="bg-slate-900 border border-slate-800 w-full max-w-xl rounded-[2.5rem] overflow-hidden shadow-2xl">
         <div className="p-8 border-b border-slate-800 flex justify-between items-center">
           <div>
-            <h2 className="text-2xl font-bold text-white">Generate Landed Cost Quote</h2>
+            <h2 className="text-2xl font-bold text-white tracking-tight">Landed Cost Calculator</h2>
             <p className="text-slate-400 text-sm mt-1 truncate max-w-xs">{inquiry.description}</p>
           </div>
-          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">&times;</button>
+          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors text-2xl">&times;</button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-8 space-y-6">
           <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-2">
+              <Label>Apply HS Code (Auto-calculate Duty)</Label>
+              <select 
+                onChange={handleHsCodeChange}
+                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-white transition-all appearance-none"
+              >
+                <option value="">Select Item Type...</option>
+                {hsCodes.map(h => (
+                  <option key={h.id} value={h.id}>{h.item_name} ({h.duty_rate_percentage}%)</option>
+                ))}
+              </select>
+            </div>
             <div>
               <Label>Base Cost (USD)</Label>
               <Input 
@@ -119,14 +166,14 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
             </div>
           </div>
 
-          <div className="bg-blue-600/10 border border-blue-500/20 rounded-2xl p-6 flex justify-between items-center">
+          <div className="bg-blue-600/10 border border-blue-500/20 rounded-3xl p-8 flex justify-between items-center">
             <div>
-              <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-1">Total Landed Cost</p>
-              <h3 className="text-3xl font-black text-white">${totalUSD.toFixed(2)}</h3>
+              <p className="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-1">Total Landed Cost</p>
+              <h3 className="text-4xl font-black text-white">${totalUSD.toFixed(2)}</h3>
             </div>
             <div className="text-right">
-              <p className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-1">GHS Estimate (@ {formData.exchange_rate})</p>
-              <h3 className="text-3xl font-black text-blue-400">₵{totalGHS.toFixed(2)}</h3>
+              <p className="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-1">GHS Estimate (@ {formData.exchange_rate})</p>
+              <h3 className="text-4xl font-black text-blue-400">₵{totalGHS.toFixed(2)}</h3>
             </div>
           </div>
 
@@ -136,16 +183,17 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
               value={formData.notes}
               onChange={e => setFormData({...formData, notes: e.target.value})}
               placeholder="e.g. Sourced from Delaware warehouse, zero sales tax applied."
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-white transition-all"
+              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-white transition-all text-sm"
+              rows={3}
             />
           </div>
 
           <div className="flex gap-4 pt-4">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1 border-slate-700 text-slate-400 hover:bg-slate-800">
+            <Button type="button" variant="outline" onClick={onClose} className="flex-1 border-slate-700 text-slate-400 hover:bg-slate-800 py-6 text-lg">
               Cancel
             </Button>
-            <Button type="submit" isLoading={loading} className="flex-1 bg-blue-600">
-              Send Quote to Customer
+            <Button type="submit" isLoading={loading} className="flex-1 bg-blue-600 py-6 text-lg">
+              Send Quote
             </Button>
           </div>
         </form>

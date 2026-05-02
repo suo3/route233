@@ -26,11 +26,22 @@ const STAGES = [
 
 export default function LockerPage() {
   const [shipments, setShipments] = useState<Shipment[]>([]);
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchShipments();
+    checkUser();
   }, []);
+
+  const checkUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      window.location.href = '/login';
+      return;
+    }
+    setUser(user);
+    fetchShipments();
+  };
 
   const fetchShipments = async () => {
     try {
@@ -46,13 +57,76 @@ export default function LockerPage() {
 
   const getActiveIndex = (status: string) => STAGES.findIndex(s => s.id === status);
 
+  const lockerAddress = {
+    name: `${user?.user_metadata?.full_name || 'Customer'} / R233-${user?.id?.slice(0, 4).toUpperCase()}`,
+    street: "123 Philadelphia St, Unit B",
+    city: "Philadelphia",
+    state: "PA",
+    zip: "19104",
+    phone: "+1 215 555 0123"
+  };
+
   return (
     <main className="min-h-screen bg-slate-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <header className="mb-12 text-center">
-          <h1 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">Your Digital Locker</h1>
-          <p className="text-slate-500">Track your items from Philadelphia to Ghana.</p>
+        <header className="mb-12 flex justify-between items-end">
+          <div>
+            <h1 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">Digital Locker</h1>
+            <p className="text-slate-500">Welcome back, {user?.user_metadata?.full_name}</p>
+          </div>
+          <Button variant="outline" className="text-xs" onClick={() => supabase.auth.signOut().then(() => window.location.href = '/')}>
+            Sign Out
+          </Button>
         </header>
+
+        {/* US Address Section */}
+        <section className="mb-12 bg-slate-900 rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden">
+          <div className="relative z-10">
+            <div className="flex justify-between items-start mb-8">
+              <div>
+                <h2 className="text-2xl font-black mb-2">Your Personal US Address</h2>
+                <p className="text-slate-400 text-sm">Use this address when buying from US stores yourself.</p>
+              </div>
+              <div className="bg-blue-600 px-4 py-2 rounded-xl font-bold text-xs">DELAWARE TAX-FREE ELIGIBLE</div>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <div>
+                  <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">Full Name / Locker ID</p>
+                  <p className="text-lg font-mono">{lockerAddress.name}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">Street Address</p>
+                  <p className="text-lg font-mono">{lockerAddress.street}</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="col-span-1">
+                    <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">City</p>
+                    <p className="text-lg font-mono">{lockerAddress.city}</p>
+                  </div>
+                  <div className="col-span-1">
+                    <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">State</p>
+                    <p className="text-lg font-mono">{lockerAddress.state}</p>
+                  </div>
+                  <div className="col-span-1">
+                    <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">ZIP</p>
+                    <p className="text-lg font-mono">{lockerAddress.zip}</p>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">Phone Number</p>
+                  <p className="text-lg font-mono">{lockerAddress.phone}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="absolute top-0 right-0 p-12 text-9xl opacity-10 font-black italic">USA</div>
+        </section>
+
+        <h3 className="text-xl font-black text-slate-900 mb-6 px-4">Active Shipments</h3>
 
         {loading ? (
           <div className="flex justify-center py-20">

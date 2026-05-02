@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase/client';
 import { preScreenInquiry } from '@/lib/gatekeeper';
+import { notify } from '@/lib/notifications';
 
 export async function POST(request: Request) {
   try {
@@ -36,8 +37,6 @@ export async function POST(request: Request) {
     if (error) throw error;
 
     if (screenResult.rejected) {
-      // Notify customer of auto-rejection
-      // notifyCustomerOfAutoRejection(data.id, screenResult.reason);
       return NextResponse.json({ 
         success: false, 
         message: 'Your request was auto-flagged for review or rejected due to safety/regulatory guidelines.',
@@ -46,8 +45,8 @@ export async function POST(request: Request) {
       });
     }
 
-    // In a real app, trigger admin notification for successful pending inquiry
-    // notifyAdminOfNewInquiry(data.id);
+    // Trigger admin notification for successful pending inquiry
+    await notify.newInquiry('0244000000', description); // Admin notification
 
     return NextResponse.json({ success: true, data });
   } catch (error: any) {

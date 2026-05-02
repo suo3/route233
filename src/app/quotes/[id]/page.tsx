@@ -110,13 +110,22 @@ export default function QuotePage() {
             </div>
           )}
 
-          <Button 
-            className="w-full py-6 text-xl bg-blue-600 hover:bg-blue-700"
-            onClick={handlePay}
-            isLoading={paying}
-          >
-            Pay with MoMo / Card
-          </Button>
+          <div className="flex gap-4">
+            <Button 
+              className="flex-1 py-6 text-xl bg-blue-600 hover:bg-blue-700 rounded-2xl"
+              onClick={handlePay}
+              isLoading={paying}
+            >
+              Pay with MoMo / Card
+            </Button>
+            <Button 
+              variant="outline" 
+              className="px-6 py-6 border-slate-200 rounded-2xl"
+              onClick={() => window.print()}
+            >
+              🖨️
+            </Button>
+          </div>
           
           <p className="mt-4 text-center text-xs text-slate-400">
             Secure payment powered by Paystack. Once paid, we'll start sourcing immediately.
