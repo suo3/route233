@@ -71,7 +71,16 @@ export default function InquiryForm() {
         reason: json.reason,
       });
     } catch (err: any) {
-      setResult({ success: false, message: err.message || 'An unexpected error occurred.' });
+      console.error('Submission Error:', err);
+      let userFriendlyMessage = 'An unexpected error occurred. Please try again or contact support.';
+      
+      if (err.message?.includes('recursion') || err.message?.includes('policy')) {
+        userFriendlyMessage = 'System configuration error. Our team has been notified. Please try again in a few minutes.';
+      } else if (err.message) {
+        userFriendlyMessage = err.message;
+      }
+
+      setResult({ success: false, message: userFriendlyMessage });
     } finally {
       setLoading(false);
     }
