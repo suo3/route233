@@ -18,17 +18,39 @@ type Inquiry = {
   };
 };
 
+type Shipment = {
+  id: string;
+  status: string;
+  current_location: string;
+  tracking_number: string;
+  last_updated: string;
+  route233_quotes: {
+    route233_inquiries: {
+      description: string;
+      route233_profiles: {
+        full_name: string;
+      };
+    };
+  };
+};
+
 export default function AdminDashboard() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
-  const [activeTab, setActiveTab] = useState<'pending' | 'quoted' | 'rejected'>('pending');
+  const [shipments, setShipments] = useState<Shipment[]>([]);
+  const [activeTab, setActiveTab] = useState<'pending' | 'quoted' | 'shipments' | 'rejected'>('pending');
   const [loading, setLoading] = useState(true);
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
 
   useEffect(() => {
-    fetchInquiries();
-  }, []);
+    if (activeTab === 'shipments') {
+      fetchShipments();
+    } else {
+      fetchInquiries();
+    }
+  }, [activeTab]);
 
   const fetchInquiries = async () => {
+    setLoading(true);
     try {
       const res = await fetch('/api/admin/inquiries');
       const json = await res.json();
@@ -37,6 +59,32 @@ export default function AdminDashboard() {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchShipments = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/shipments');
+      const json = await res.json();
+      if (json.success) setShipments(json.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateShipmentStatus = async (id: string, status: string, location: string) => {
+    try {
+      await fetch(`/api/admin/shipments/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status, current_location: location })
+      });
+      fetchShipments();
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -51,10 +99,10 @@ export default function AdminDashboard() {
         <header className="flex justify-between items-end mb-12">
           <div>
             <h1 className="text-4xl font-bold mb-2">Route233 Admin</h1>
-            <p className="text-slate-400">Manage sourcing requests and calculate landed costs.</p>
+            <p className="text-slate-400">Manage sourcing requests and track shipments.</p>
           </div>
           <div className="bg-slate-800 p-1 rounded-xl flex gap-1">
-            {(['pending', 'quoted', 'rejected'] as const).map(tab => (
+            {(['pending', 'quoted', 'shipments', 'rejected'] as const).map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -71,6 +119,47 @@ export default function AdminDashboard() {
         {loading ? (
           <div className="flex justify-center py-20">
             <div className="animate-spin h-10 w-10 border-4 border-blue-600 border-t-transparent rounded-full" />
+          </div>
+        ) : activeTab === 'shipments' ? (
+          <div className="grid gap-6">
+            {shipments.length === 0 ? (
+              <div className="bg-slate-800/50 border border-slate-700/50 rounded-3xl p-20 text-center">
+                <p className="text-slate-500 font-medium italic">No active shipments found.</p>
+              </div>
+            ) : (
+              shipments.map(shipment => (
+                <div key={shipment.id} className="bg-slate-800 border border-slate-700 rounded-3xl p-6 flex justify-between items-center">
+                  <div>
+                    <h3 className="font-bold text-lg mb-1">{shipment.route233_quotes.route233_inquiries.description}</h3>
+                    <p className="text-slate-400 text-sm">Customer: {shipment.route233_quotes.route233_inquiries.route233_profiles.full_name}</p>
+                    <p className="text-xs text-blue-400 mt-2 font-mono uppercase tracking-tighter">Location: {shipment.current_location}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <select 
+                      className="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={shipment.status}
+                      onChange={(e) => updateShipmentStatus(shipment.id, e.target.value, shipment.current_location)}
+                    >
+                      <option value="paid">Paid</option>
+                      <option value="hub_received">Hub Received</option>
+                      <option value="in_transit">In Transit</option>
+                      <option value="ready_for_pickup">Ready in Ghana</option>
+                      <option value="delivered">Delivered</option>
+                    </select>
+                    <Button 
+                      variant="outline" 
+                      className="text-xs py-2"
+                      onClick={() => {
+                        const newLoc = prompt('Enter new location:', shipment.current_location);
+                        if (newLoc) updateShipmentStatus(shipment.id, shipment.status, newLoc);
+                      }}
+                    >
+                      Update Loc
+                    </Button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         ) : (
           <div className="grid gap-6">
