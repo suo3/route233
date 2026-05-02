@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui';
 import { supabase } from '@/lib/supabase/client';
+import Link from 'next/link';
 
 type Shipment = {
   id: string;

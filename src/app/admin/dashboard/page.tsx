@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui';
 import QuoteModal from '@/components/QuoteModal';
+import Link from 'next/link';
 
 type Inquiry = {
   id: string;
@@ -95,8 +96,11 @@ export default function AdminDashboard() {
 
   return (
     <div className="py-8">
-      <div className="max-w-6xl mx-auto">
-        <header className="flex justify-between items-end mb-12 px-4">
+      <div className="max-w-6xl mx-auto px-4">
+        <Link href="/" className="inline-flex items-center text-sm font-bold text-slate-400 hover:text-blue-500 transition-colors mb-8 group">
+          <span className="mr-2 group-hover:-translate-x-1 transition-transform">←</span> Back to Site
+        </Link>
+        <header className="flex justify-between items-end mb-12">
           <div>
             <h1 className="text-4xl font-bold mb-2">Route233 Admin</h1>
             <p className="text-slate-400">Manage sourcing requests and track shipments.</p>
