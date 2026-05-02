@@ -3,28 +3,9 @@ import { Button } from '@/components/ui';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="text-2xl font-black text-slate-900 tracking-tighter">
-            ROUTE<span className="text-blue-600">233</span>
-          </div>
-          <div className="flex gap-4">
-            <Link href="/locker" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors py-2 px-4">
-              Track Order
-            </Link>
-            <Link href="/inquire">
-              <Button className="bg-slate-900 text-white px-6 py-2 rounded-full text-sm">
-                Get a Quote
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
-
+    <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="pt-40 pb-24 px-6">
+      <section className="pt-24 pb-24 px-6">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <div className="animate-in fade-in slide-in-from-left-8 duration-700">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-xs font-bold uppercase tracking-widest mb-8">
@@ -40,15 +21,15 @@ export default function Home() {
             <p className="text-xl text-slate-600 mb-12 leading-relaxed max-w-xl">
               Stop worrying about international shipping. We find, verify, and ship refurbished electronics and automotive parts from Philadelphia and Delaware directly to your doorstep in Ghana.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4">
               <Link href="/inquire">
-                <Button className="w-full sm:w-auto bg-blue-600 text-white text-lg py-7 px-10 rounded-2xl shadow-2xl shadow-blue-500/20 hover:scale-105 transition-all">
+                <Button className="w-full bg-blue-600 text-white text-lg py-7 px-10 rounded-2xl shadow-2xl shadow-blue-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
                   Submit a Request
                 </Button>
               </Link>
-              <Link href="/locker">
-                <Button variant="outline" className="w-full sm:w-auto border-2 border-slate-200 text-lg py-7 px-10 rounded-2xl hover:bg-slate-50 transition-all">
-                  Open Digital Locker
+              <Link href="/track">
+                <Button variant="outline" className="w-full border-2 border-slate-200 text-lg py-7 px-10 rounded-2xl hover:bg-slate-50 transition-all">
+                  Track My Order
                 </Button>
               </Link>
             </div>
@@ -79,8 +60,8 @@ export default function Home() {
                
                <div className="absolute bottom-12 right-12 bg-white p-8 rounded-3xl w-72 shadow-2xl rotate-[-6deg]">
                  <div className="flex justify-between items-start mb-4">
-                   <div className="bg-blue-50 text-blue-600 w-10 h-10 rounded-xl flex items-center justify-center font-bold">📦</div>
-                   <span className="bg-green-100 text-green-700 text-[10px] px-2 py-1 rounded-full font-black">IN TRANSIT</span>
+                    <div className="bg-blue-50 text-blue-600 w-10 h-10 rounded-xl flex items-center justify-center font-bold">📦</div>
+                    <span className="bg-green-100 text-green-700 text-[10px] px-2 py-1 rounded-full font-black">IN TRANSIT</span>
                  </div>
                  <p className="text-slate-400 text-[10px] font-bold uppercase mb-1">Current Location</p>
                  <p className="text-slate-900 font-bold">Departed Philadelphia Hub</p>
@@ -92,10 +73,10 @@ export default function Home() {
       </section>
 
       {/* How it Works */}
-      <section className="py-24 bg-slate-50">
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20">
-            <h2 className="text-4xl font-black text-slate-900 mb-4">How Route233 Works</h2>
+            <h2 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">How Route233 Works</h2>
             <p className="text-slate-500 max-w-xl mx-auto text-lg">We've simplified the US sourcing experience. No hidden fees, no port surprises.</p>
           </div>
 
@@ -132,7 +113,7 @@ export default function Home() {
       </section>
 
       {/* Trust Section */}
-      <section className="py-24">
+      <section className="py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6 flex flex-col items-center">
           <div className="grid md:grid-cols-2 gap-20 items-center">
             <div>
@@ -144,7 +125,7 @@ export default function Home() {
                   { t: "MoMo & Local Payments", d: "Pay in GHS using Paystack. No need for dollar cards or high bank exchange rates.", i: "📱" }
                 ].map((item, idx) => (
                   <div key={idx} className="flex gap-6">
-                    <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-2xl shrink-0">{item.i}</div>
+                    <div className="w-14 h-14 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center text-2xl shrink-0">{item.i}</div>
                     <div>
                       <h4 className="font-bold text-lg text-slate-900 mb-1">{item.t}</h4>
                       <p className="text-slate-500 leading-relaxed text-sm">{item.d}</p>
@@ -165,15 +146,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <footer className="py-12 border-t border-slate-100 text-center">
-        <div className="text-2xl font-black text-slate-900 tracking-tighter mb-4">
-          ROUTE<span className="text-blue-600">233</span>
-        </div>
-        <p className="text-slate-400 text-sm">
-          &copy; 2026 Akanexus Studio &bull; Operations in Philadelphia, PA & Delaware &bull; Pickup in Accra, Ghana
-        </p>
-      </footer>
     </main>
   );
 }

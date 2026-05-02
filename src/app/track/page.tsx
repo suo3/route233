@@ -61,14 +61,14 @@ export default function TrackingPage() {
   return (
     <main className="min-h-screen bg-slate-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
+        <Link href="/" className="inline-flex items-center text-sm font-bold text-slate-400 hover:text-blue-600 transition-colors mb-8 group">
+          <span className="mr-2 group-hover:-translate-x-1 transition-transform">←</span> Back to Home
+        </Link>
         <header className="mb-12 flex justify-between items-center bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100">
           <div>
             <h1 className="text-3xl font-black text-slate-900 tracking-tight">Track Your Items</h1>
             <p className="text-slate-500 text-sm">Welcome, {user?.user_metadata?.full_name}</p>
           </div>
-          <Button variant="outline" className="text-xs py-2 px-4" onClick={() => supabase.auth.signOut().then(() => window.location.href = '/')}>
-            Sign Out
-          </Button>
         </header>
 
         {loading ? (
