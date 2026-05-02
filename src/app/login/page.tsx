@@ -16,15 +16,26 @@ export default function LoginPage() {
     setLoading(true);
     setMessage('');
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data: { user }, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
       setMessage(error.message);
-    } else {
-      window.location.href = '/locker';
+    } else if (user) {
+      // Fetch profile to check role
+      const { data: profile } = await supabase
+        .from('route233_profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+
+      if (profile?.role === 'admin') {
+        window.location.href = '/admin/dashboard';
+      } else {
+        window.location.href = '/track';
+      }
     }
     setLoading(false);
   };
