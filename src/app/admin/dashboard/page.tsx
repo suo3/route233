@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui';
+import QuoteModal from '@/components/QuoteModal';
 
 type Inquiry = {
   id: string;
@@ -21,6 +22,7 @@ export default function AdminDashboard() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [activeTab, setActiveTab] = useState<'pending' | 'quoted' | 'rejected'>('pending');
   const [loading, setLoading] = useState(true);
+  const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
 
   useEffect(() => {
     fetchInquiries();
@@ -137,9 +139,17 @@ export default function AdminDashboard() {
                         <>
                           <div className="flex justify-between items-center mb-6">
                             <span className="text-sm font-bold">Landed Cost Quote</span>
-                            <span className="text-xs bg-blue-600/20 text-blue-400 px-2 py-1 rounded">Action Required</span>
+                            <span className={`text-xs px-2 py-1 rounded ${inquiry.status === 'quoted' ? 'bg-green-600/20 text-green-400' : 'bg-blue-600/20 text-blue-400'}`}>
+                              {inquiry.status === 'quoted' ? 'Sent to Customer' : 'Action Required'}
+                            </span>
                           </div>
-                          <Button variant="primary" className="w-full">Generate Quote</Button>
+                          <Button 
+                            variant="primary" 
+                            className="w-full"
+                            onClick={() => setSelectedInquiry(inquiry)}
+                          >
+                            {inquiry.status === 'quoted' ? 'Update Quote' : 'Generate Quote'}
+                          </Button>
                         </>
                       )}
                     </div>
@@ -155,6 +165,14 @@ export default function AdminDashboard() {
           </div>
         )}
       </div>
+
+      {selectedInquiry && (
+        <QuoteModal 
+          inquiry={selectedInquiry}
+          onClose={() => setSelectedInquiry(null)}
+          onSuccess={() => fetchInquiries()}
+        />
+      )}
     </div>
   );
 }
