@@ -3,9 +3,10 @@ import { supabase } from '@/lib/supabase/client';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const { data, error } = await supabase
       .from('route233_quotes')
       .select(`
@@ -14,7 +15,7 @@ export async function GET(
           description
         )
       `)
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (error) throw error;

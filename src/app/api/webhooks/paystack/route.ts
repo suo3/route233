@@ -1,13 +1,18 @@
 import { NextResponse } from 'next/server';
 import { getAdminClient } from '@/lib/supabase/client';
+import { verifySignature } from '@/lib/paystack';
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const adminSupabase = getAdminClient();
+    const textBody = await request.text();
+    const signature = request.headers.get('x-paystack-signature');
 
-    // In a real app, verify the Paystack signature here
-    // verifySignature(request);
+    if (!verifySignature(textBody, signature)) {
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
+    }
+
+    const body = JSON.parse(textBody);
+    const adminSupabase = getAdminClient();
 
     if (body.event === 'charge.success') {
       const { reference, metadata, amount, currency } = body.data;

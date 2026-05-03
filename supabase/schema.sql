@@ -99,3 +99,16 @@ CREATE POLICY "Users can view related shipments" ON route233_shipments FOR SELEC
     EXISTS (SELECT 1 FROM route233_quotes q JOIN route233_inquiries i ON q.inquiry_id = i.id WHERE q.id = quote_id AND i.customer_id = auth.uid())
     OR EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND is_admin = TRUE)
 );
+
+-- Config Table (For exchange rates and platform settings)
+CREATE TABLE route233_config (
+    key TEXT PRIMARY KEY,
+    value JSONB NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+ALTER TABLE route233_config ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public can view config" ON route233_config FOR SELECT USING (true);
+CREATE POLICY "Admins can update config" ON route233_config FOR UPDATE USING (
+    EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND is_admin = TRUE)
+);
+

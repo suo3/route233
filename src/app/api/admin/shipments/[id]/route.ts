@@ -3,9 +3,10 @@ import { getAdminClient } from '@/lib/supabase/client';
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const adminSupabase = getAdminClient();
 
@@ -19,7 +20,7 @@ export async function PATCH(
         tracking_number,
         last_updated: new Date().toISOString()
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single();
 

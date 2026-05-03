@@ -4,10 +4,10 @@ import { initializePayment } from '@/lib/paystack';
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const quoteId = params.id;
+    const { id: quoteId } = await params;
 
     // 1. Fetch the quote and customer details
     const { data: quote, error: quoteError } = await supabase

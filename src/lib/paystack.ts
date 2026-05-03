@@ -1,3 +1,12 @@
+import crypto from 'crypto';
+
+export function verifySignature(body: string, signature: string | null) {
+  if (!signature) return false;
+  const paystackSecret = process.env.PAYSTACK_SECRET_KEY!;
+  const hash = crypto.createHmac('sha512', paystackSecret).update(body).digest('hex');
+  return hash === signature;
+}
+
 export async function initializePayment(email: string, amountGHS: number, quoteId: string) {
   const paystackSecret = process.env.PAYSTACK_SECRET_KEY!;
   
