@@ -143,7 +143,7 @@ export default function InquiryForm() {
           {category === 'automotive' && (
             <div className="animate-in fade-in slide-in-from-top-2">
               <Label>VIN Number</Label>
-              <Input name="vin" placeholder="17-character VIN" maxLength={17} />
+              <Input name="vin" placeholder="17-character VIN" maxLength={17} required />
               <p className="text-[10px] text-slate-400 mt-2 italic">Required for car parts and vehicle sourcing.</p>
             </div>
           )}
