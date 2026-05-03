@@ -36,9 +36,8 @@ export async function POST(request: Request) {
           service_fee_usd,
           customs_estimate_usd,
           exchange_rate: rate,
-          total_landed_cost_ghs: total_ghs,
-          notes,
-          expires_at
+          total_ghs: total_ghs,
+          notes
         }
       ])
       .select()

@@ -73,12 +73,15 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
     setLoading(true);
 
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const res = await fetch('/api/admin/quotes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           inquiry_id: inquiry.id,
-          admin_id: 'd290f1ee-6c54-4b01-90e6-d701748f0851', // Placeholder
+          admin_id: user.id,
           ...formData
         }),
       });

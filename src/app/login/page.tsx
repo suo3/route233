@@ -1,15 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 import { Button, Input, Label } from '@/components/ui';
 import Link from 'next/link';
+import { Suspense, useEffect, useState } from 'react';
 
-export default function LoginPage() {
+function LoginContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState<'error' | 'success'>('error');
+
+  useEffect(() => {
+    const msg = searchParams.get('message');
+    const type = searchParams.get('type') as 'error' | 'success';
+    if (msg) {
+      setMessage(msg);
+      if (type) setMessageType(type);
+    }
+  }, [searchParams]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,13 +49,13 @@ export default function LoginPage() {
       if (profileError) {
         console.error('Profile fetch error:', profileError);
         // Fallback: Default to track if profile check fails
-        window.location.href = '/track';
+        router.push('/track');
       } else if (profile?.role === 'admin') {
         console.log('Admin detected, redirecting...');
-        window.location.href = '/admin/dashboard';
+        router.push('/admin/dashboard');
       } else {
         console.log('Customer detected, redirecting...');
-        window.location.href = '/track';
+        router.push('/track');
       }
     }
     setLoading(false);
@@ -60,7 +73,9 @@ export default function LoginPage() {
         </div>
 
         {message && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-2xl text-sm">
+          <div className={`mb-6 p-4 rounded-2xl text-sm border ${
+            messageType === 'success' ? 'bg-green-50 border-green-100 text-green-700' : 'bg-red-50 border-red-100 text-red-600'
+          }`}>
             {message}
           </div>
         )}
@@ -99,5 +114,13 @@ export default function LoginPage() {
         </p>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }

@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 import { Button, Input, Label } from '@/components/ui';
 import Link from 'next/link';
 
 export default function SignupPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -51,7 +53,13 @@ export default function SignupPage() {
         console.error('Profile creation error:', profileError);
       }
 
-      setMessage('Check your email for the confirmation link!');
+      if (data.session) {
+        // Auto-logged in, take to dashboard
+        router.push('/track');
+      } else {
+        // Email confirmation required, take to login with message
+        router.push('/login?message=Check your email for the confirmation link!&type=success');
+      }
     }
     
     setLoading(false);

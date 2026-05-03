@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui';
 import { supabase } from '@/lib/supabase/client';
 import Link from 'next/link';
@@ -26,10 +27,22 @@ const STAGES = [
   { id: 'delivered', label: 'Delivered', icon: '✅' },
 ];
 
-export default function TrackingPage() {
+function TrackingContent() {
+  const searchParams = useSearchParams();
   const [shipments, setShipments] = useState<Shipment[]>([]);
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState<'error' | 'success'>('error');
+
+  useEffect(() => {
+    const msg = searchParams.get('message');
+    const type = searchParams.get('type') as 'error' | 'success';
+    if (msg) {
+      setMessage(msg);
+      if (type) setMessageType(type);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     checkUser();
@@ -65,11 +78,21 @@ export default function TrackingPage() {
         <Link href="/" className="inline-flex items-center text-sm font-bold text-slate-400 hover:text-blue-600 transition-colors mb-8 group">
           <span className="mr-2 group-hover:-translate-x-1 transition-transform">←</span> Back to Home
         </Link>
-        <header className="mb-12 flex justify-between items-center bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100">
-          <div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Track Your Items</h1>
-            <p className="text-slate-500 text-sm">Welcome, {user?.user_metadata?.full_name}</p>
+        <header className="mb-12 flex flex-col gap-6 bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100">
+          <div className="flex justify-between items-center w-full">
+            <div>
+              <h1 className="text-3xl font-black text-slate-900 tracking-tight">Track Your Items</h1>
+              <p className="text-slate-500 text-sm">Welcome, {user?.user_metadata?.full_name}</p>
+            </div>
           </div>
+
+          {message && (
+            <div className={`p-4 rounded-2xl text-sm border ${
+              messageType === 'success' ? 'bg-green-50 border-green-100 text-green-700' : 'bg-red-50 border-red-100 text-red-600'
+            }`}>
+              {message}
+            </div>
+          )}
         </header>
 
         {loading ? (
@@ -139,5 +162,17 @@ export default function TrackingPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function TrackingPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="animate-spin h-10 w-10 border-4 border-blue-600 border-t-transparent rounded-full" />
+      </div>
+    }>
+      <TrackingContent />
+    </Suspense>
   );
 }

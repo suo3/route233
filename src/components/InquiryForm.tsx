@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 import { Button, Input, Label } from '@/components/ui';
 
 type Category = 'electronics' | 'automotive' | 'general';
 
 export default function InquiryForm() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState<Category>('general');
   const [result, setResult] = useState<{ success: boolean; message?: string; reason?: string } | null>(null);
@@ -65,11 +67,15 @@ export default function InquiryForm() {
         throw new Error(json.error || 'Failed to submit request. Please try again.');
       }
 
-      setResult({
-        success: json.success,
-        message: json.message,
-        reason: json.reason,
-      });
+      if (json.success) {
+        router.push('/track?message=Request Received! We are reviewing your request. Check your locker for updates.&type=success');
+      } else {
+        setResult({
+          success: json.success,
+          message: json.message,
+          reason: json.reason,
+        });
+      }
     } catch (err: any) {
       console.error('Submission Error:', err);
       let userFriendlyMessage = 'An unexpected error occurred. Please try again or contact support.';
