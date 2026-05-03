@@ -46,7 +46,7 @@ export default function SignupPage() {
           id: data.user.id,
           full_name: fullName,
           phone_number: phone,
-          role: 'customer'
+          is_admin: false
         }]);
       
       if (profileError) {

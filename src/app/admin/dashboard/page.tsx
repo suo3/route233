@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui';
 import QuoteModal from '@/components/QuoteModal';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase/client';
 
 type Inquiry = {
   id: string;
@@ -43,19 +44,45 @@ export default function AdminDashboard() {
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
 
   useEffect(() => {
-    if (activeTab === 'shipments') {
-      fetchShipments();
-    } else {
-      fetchInquiries();
-    }
+    verifyAdminAndFetch();
   }, [activeTab]);
 
-  const fetchInquiries = async () => {
+  const verifyAdminAndFetch = async () => {
     setLoading(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      window.location.href = '/login';
+      return;
+    }
+    
+    const { data: profile } = await supabase.from('route233_profiles').select('is_admin').eq('id', user.id).single();
+    if (!profile?.is_admin) {
+      window.location.href = '/';
+      return;
+    }
+
+    if (activeTab === 'shipments') {
+      await fetchShipments();
+    } else {
+      await fetchInquiries();
+    }
+  };
+
+  const fetchInquiries = async () => {
     try {
-      const res = await fetch('/api/admin/inquiries');
-      const json = await res.json();
-      if (json.success) setInquiries(json.data);
+      const { data, error } = await supabase
+        .from('route233_inquiries')
+        .select(`
+          *,
+          route233_profiles (
+            full_name,
+            phone_number
+          )
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setInquiries(data as any);
     } catch (err) {
       console.error(err);
     } finally {
@@ -64,11 +91,24 @@ export default function AdminDashboard() {
   };
 
   const fetchShipments = async () => {
-    setLoading(true);
     try {
-      const res = await fetch('/api/admin/shipments');
-      const json = await res.json();
-      if (json.success) setShipments(json.data);
+      const { data, error } = await supabase
+        .from('route233_shipments')
+        .select(`
+          *,
+          route233_quotes (
+            route233_inquiries (
+              description,
+              route233_profiles (
+                full_name
+              )
+            )
+          )
+        `)
+        .order('last_updated', { ascending: false });
+
+      if (error) throw error;
+      setShipments(data as any);
     } catch (err) {
       console.error(err);
     } finally {

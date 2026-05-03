@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 
 export function Navbar() {
   const [user, setUser] = useState<any>(null);
-  const [role, setRole] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -23,7 +23,7 @@ export function Navbar() {
         fetchRole(session.user.id);
       } else {
         setUser(null);
-        setRole(null);
+        setIsAdmin(false);
       }
     });
 
@@ -42,8 +42,8 @@ export function Navbar() {
   };
 
   const fetchRole = async (userId: string) => {
-    const { data } = await supabase.from('route233_profiles').select('role').eq('id', userId).single();
-    if (data) setRole(data.role);
+    const { data } = await supabase.from('route233_profiles').select('is_admin').eq('id', userId).single();
+    if (data) setIsAdmin(data.is_admin);
   };
 
   const isAuthPage = pathname === '/login' || pathname === '/signup';
@@ -68,8 +68,11 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             {user ? (
               <>
-                <Link href={role === 'admin' ? '/admin/dashboard' : '/track'} className={`text-sm font-bold transition-colors py-2 px-4 ${subTextClass} hover:text-blue-500`}>
-                  {role === 'admin' ? 'Dashboard' : 'My Tracking'}
+                <Link href={isAdmin ? '/admin/dashboard' : '/track'} className={`text-sm font-bold transition-colors py-2 px-4 ${subTextClass} hover:text-blue-500`}>
+                  {isAdmin ? 'Dashboard' : 'My Locker'}
+                </Link>
+                <Link href="/profile" className={`text-sm font-bold transition-colors py-2 px-4 ${subTextClass} hover:text-blue-500`}>
+                  Profile
                 </Link>
                 <button 
                   onClick={() => supabase.auth.signOut().then(() => window.location.href = '/')}

@@ -42,7 +42,7 @@ function LoginContent() {
       // Fetch profile to check role
       const { data: profile, error: profileError } = await supabase
         .from('route233_profiles')
-        .select('role')
+        .select('is_admin')
         .eq('id', user.id)
         .single();
 
@@ -50,7 +50,7 @@ function LoginContent() {
         console.error('Profile fetch error:', profileError);
         // Fallback: Default to track if profile check fails
         router.push('/track');
-      } else if (profile?.role === 'admin') {
+      } else if (profile?.is_admin === true) {
         console.log('Admin detected, redirecting...');
         router.push('/admin/dashboard');
       } else {
