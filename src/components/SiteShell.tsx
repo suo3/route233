@@ -42,8 +42,8 @@ export function Navbar() {
   };
 
   const fetchRole = async (userId: string) => {
-    const { data } = await supabase.from('route233_profiles').select('is_admin').eq('id', userId).single();
-    if (data) setIsAdmin(data.is_admin);
+    const { data } = await supabase.from('route233_profiles').select('role').eq('id', userId).single();
+    if (data) setIsAdmin(data.role === 'admin');
   };
 
   const isAuthPage = pathname === '/login' || pathname === '/signup';

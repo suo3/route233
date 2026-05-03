@@ -14,7 +14,7 @@ CREATE TABLE route233_profiles (
     full_name TEXT NOT NULL,
     phone_number TEXT,
     location TEXT DEFAULT 'Ghana', -- 'Ghana' or 'USA'
-    is_admin BOOLEAN DEFAULT FALSE,
+    role VARCHAR DEFAULT 'customer',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 
@@ -85,19 +85,19 @@ CREATE POLICY "Users can view own profile" ON route233_profiles FOR SELECT USING
 CREATE POLICY "Users can update own profile" ON route233_profiles FOR UPDATE USING (auth.uid() = id);
 
 -- Inquiries: Customers can view/create own, Admins view all
-CREATE POLICY "Customers can view own inquiries" ON route233_inquiries FOR SELECT USING (auth.uid() = customer_id OR EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND is_admin = TRUE));
+CREATE POLICY "Customers can view own inquiries" ON route233_inquiries FOR SELECT USING (auth.uid() = customer_id OR EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND role = 'admin'));
 CREATE POLICY "Customers can create inquiries" ON route233_inquiries FOR INSERT WITH CHECK (auth.uid() = customer_id);
 
 -- Quotes: Customers view quotes for their inquiries, Admins view all
 CREATE POLICY "Users can view related quotes" ON route233_quotes FOR SELECT USING (
     EXISTS (SELECT 1 FROM route233_inquiries WHERE id = inquiry_id AND customer_id = auth.uid()) 
-    OR EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND is_admin = TRUE)
+    OR EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND role = 'admin')
 );
 
 -- Shipments: Customers view their shipments, Admins update
 CREATE POLICY "Users can view related shipments" ON route233_shipments FOR SELECT USING (
     EXISTS (SELECT 1 FROM route233_quotes q JOIN route233_inquiries i ON q.inquiry_id = i.id WHERE q.id = quote_id AND i.customer_id = auth.uid())
-    OR EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND is_admin = TRUE)
+    OR EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND role = 'admin')
 );
 
 -- Config Table (For exchange rates and platform settings)
@@ -109,6 +109,6 @@ CREATE TABLE route233_config (
 ALTER TABLE route233_config ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public can view config" ON route233_config FOR SELECT USING (true);
 CREATE POLICY "Admins can update config" ON route233_config FOR UPDATE USING (
-    EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND is_admin = TRUE)
+    EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND role = 'admin')
 );
 

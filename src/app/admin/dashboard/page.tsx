@@ -55,8 +55,8 @@ export default function AdminDashboard() {
       return;
     }
     
-    const { data: profile } = await supabase.from('route233_profiles').select('is_admin').eq('id', user.id).single();
-    if (!profile?.is_admin) {
+    const { data: profile } = await supabase.from('route233_profiles').select('role').eq('id', user.id).single();
+    if (profile?.role !== 'admin') {
       window.location.href = '/';
       return;
     }

@@ -131,7 +131,7 @@ function ProfileContent() {
             </div>
             <h1 className="text-3xl font-black text-slate-900 tracking-tight">{formData.full_name || 'Your Profile'}</h1>
             <p className="text-slate-500 font-medium mt-1">{user?.email}</p>
-            {profile?.is_admin && (
+            {profile?.role === 'admin' && (
               <span className="mt-3 px-3 py-1 bg-slate-900 text-white text-xs font-bold uppercase tracking-widest rounded-full">
                 Admin
               </span>
