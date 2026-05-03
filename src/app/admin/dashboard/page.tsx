@@ -39,7 +39,8 @@ type Shipment = {
 export default function AdminDashboard() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [shipments, setShipments] = useState<Shipment[]>([]);
-  const [activeTab, setActiveTab] = useState<'pending' | 'quoted' | 'shipments' | 'rejected'>('pending');
+  const [users, setUsers] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<'pending' | 'quoted' | 'shipments' | 'rejected' | 'users'>('pending');
   const [loading, setLoading] = useState(true);
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
 
@@ -63,8 +64,88 @@ export default function AdminDashboard() {
 
     if (activeTab === 'shipments') {
       await fetchShipments();
+    } else if (activeTab === 'users') {
+      await fetchUsers();
     } else {
       await fetchInquiries();
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch('/api/admin/users', {
+        headers: { Authorization: `Bearer ${session?.access_token}` }
+      });
+      const json = await res.json();
+      if (json.success) setUsers(json.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteUser = async (id: string) => {
+    if (!confirm('Are you sure you want to completely delete this user? This cannot be undone.')) return;
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      await fetch(`/api/admin/users?id=${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${session?.access_token}` }
+      });
+      fetchUsers();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const addUser = async () => {
+    const email = prompt('Enter new user email:');
+    if (!email) return;
+    const password = prompt('Enter new user password (min 6 chars):');
+    if (!password) return;
+    const fullName = prompt('Enter full name:');
+    if (!fullName) return;
+    const phone = prompt('Enter phone number (optional):');
+    const role = prompt('Enter role (customer or admin):', 'customer');
+    
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch('/api/admin/users', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.access_token}` 
+        },
+        body: JSON.stringify({ email, password, fullName, phone, role })
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error);
+      fetchUsers();
+    } catch (err: any) {
+      alert('Failed to add user: ' + err.message);
+    }
+  };
+
+  const deleteInquiry = async (id: string) => {
+    if (!confirm('Delete this inquiry?')) return;
+    try {
+      await supabase.from('route233_inquiries').delete().eq('id', id);
+      fetchInquiries();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const editInquiry = async (inquiry: Inquiry) => {
+    const newDesc = prompt('Edit Description:', inquiry.description);
+    if (!newDesc) return;
+    try {
+      await supabase.from('route233_inquiries').update({ description: newDesc }).eq('id', inquiry.id);
+      fetchInquiries();
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -146,7 +227,7 @@ export default function AdminDashboard() {
             <p className="text-slate-400">Manage sourcing requests and track shipments.</p>
           </div>
           <div className="bg-slate-800 p-1 rounded-xl flex gap-1">
-            {(['pending', 'quoted', 'shipments', 'rejected'] as const).map(tab => (
+            {(['pending', 'quoted', 'shipments', 'rejected', 'users'] as const).map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -201,6 +282,32 @@ export default function AdminDashboard() {
                       Update Loc
                     </Button>
                   </div>
+                </div>
+              ))
+            )}
+          </div>
+        ) : activeTab === 'users' ? (
+          <div className="grid gap-6">
+            <div className="flex justify-end mb-4">
+              <Button onClick={addUser}>+ Add New User</Button>
+            </div>
+            {users.length === 0 ? (
+              <div className="bg-slate-800/50 border border-slate-700/50 rounded-3xl p-20 text-center">
+                <p className="text-slate-500 font-medium italic">No users found.</p>
+              </div>
+            ) : (
+              users.map(u => (
+                <div key={u.id} className="bg-slate-800 border border-slate-700 rounded-3xl p-6 flex justify-between items-center">
+                  <div>
+                    <h3 className="font-bold text-lg mb-1">{u.profile?.full_name || 'No Name'}</h3>
+                    <p className="text-slate-400 text-sm">{u.email} &bull; {u.profile?.phone_number || 'No phone'}</p>
+                    <p className="text-xs text-slate-500 mt-2 font-mono uppercase tracking-tighter">
+                      Joined: {new Date(u.created_at).toLocaleDateString()} &bull; Role: {u.profile?.role || 'None'}
+                    </p>
+                  </div>
+                  <Button variant="outline" className="text-red-500 border-red-500 hover:bg-red-500/10" onClick={() => deleteUser(u.id)}>
+                    Delete User
+                  </Button>
                 </div>
               ))
             )}
@@ -289,8 +396,14 @@ export default function AdminDashboard() {
                   </div>
                   
                   <div className="mt-6 pt-6 border-t border-slate-700/50 flex justify-between items-center text-xs text-slate-500">
-                    <span>ID: {inquiry.id}</span>
-                    <span>Received: {new Date(inquiry.created_at).toLocaleString()}</span>
+                    <div className="flex gap-4">
+                      <span>ID: {inquiry.id}</span>
+                      <span>Received: {new Date(inquiry.created_at).toLocaleString()}</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" className="text-xs py-1 px-3" onClick={() => editInquiry(inquiry)}>Edit</Button>
+                      <Button variant="outline" className="text-xs py-1 px-3 text-red-500 border-red-500 hover:bg-red-500/10" onClick={() => deleteInquiry(inquiry.id)}>Delete</Button>
+                    </div>
                   </div>
                 </div>
               ))

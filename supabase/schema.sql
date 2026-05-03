@@ -87,6 +87,11 @@ CREATE POLICY "Users can update own profile" ON route233_profiles FOR UPDATE USI
 -- Inquiries: Customers can view/create own, Admins view all
 CREATE POLICY "Customers can view own inquiries" ON route233_inquiries FOR SELECT USING (auth.uid() = customer_id OR EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND role = 'admin'));
 CREATE POLICY "Customers can create inquiries" ON route233_inquiries FOR INSERT WITH CHECK (auth.uid() = customer_id);
+CREATE POLICY "Admins can update inquiries" ON route233_inquiries FOR UPDATE USING (EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND role = 'admin'));
+CREATE POLICY "Admins can delete inquiries" ON route233_inquiries FOR DELETE USING (EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND role = 'admin'));
+
+-- Profiles: Admins can manage all profiles
+CREATE POLICY "Admins can manage profiles" ON route233_profiles FOR ALL USING (EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND role = 'admin'));
 
 -- Quotes: Customers view quotes for their inquiries, Admins view all
 CREATE POLICY "Users can view related quotes" ON route233_quotes FOR SELECT USING (
