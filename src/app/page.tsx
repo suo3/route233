@@ -8,8 +8,8 @@ export default function Home() {
       <section className="pt-32 pb-40 px-6 bg-black relative">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <div className="animate-in fade-in duration-700">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-white rounded-sm text-xs font-bold uppercase tracking-wider mb-8">
-              <span className="w-2 h-2 rounded-full bg-green-500"></span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-white rounded-sm text-[10px] font-bold uppercase tracking-wider mb-8">
+              <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
               Operations Active
             </div>
             
@@ -23,12 +23,12 @@ export default function Home() {
             
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/inquire">
-                <Button className="w-full sm:w-auto !bg-white !text-black text-lg py-7 px-10 rounded-none hover:!bg-gray-200 transition-colors font-semibold border-none">
+                <Button variant="accent" className="w-full sm:w-auto text-lg py-7 px-10 rounded-none transition-colors font-semibold border-none">
                   Request a Quote
                 </Button>
               </Link>
               <Link href="/track">
-                <Button variant="outline" className="w-full sm:w-auto !bg-black border-2 !border-white !text-white text-lg py-7 px-10 rounded-none hover:!bg-white hover:!text-black transition-colors font-semibold">
+                <Button variant="outline" className="w-full sm:w-auto !bg-transparent border-2 !border-white !text-white text-lg py-7 px-10 rounded-none hover:!bg-white hover:!text-black transition-colors font-semibold">
                   Track Delivery
                 </Button>
               </Link>

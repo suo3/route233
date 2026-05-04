@@ -49,8 +49,8 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 w-full z-50 bg-black border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-black tracking-tight text-white">
-          ROUTE233
+        <Link href="/" className="text-2xl font-black tracking-tight text-white uppercase">
+          Route<span className="text-yellow-400">233</span>
         </Link>
         
         {!isAuthPage && (
@@ -78,7 +78,7 @@ export function Navbar() {
                     Log in
                   </Link>
                   <Link href="/signup">
-                    <Button className="!bg-white !text-black hover:!bg-gray-200 text-sm rounded-none px-6 py-2 font-medium border-none">
+                    <Button variant="outline" className="!bg-transparent !border-white !text-white hover:!bg-white hover:!text-black text-sm rounded-none px-6 py-2 font-medium">
                       Sign up
                     </Button>
                   </Link>
@@ -86,7 +86,7 @@ export function Navbar() {
               )}
               <div className="h-6 w-[1px] mx-2 bg-white/20" />
               <Link href="/inquire">
-                <Button className="!bg-white !text-black px-6 py-2 rounded-none text-sm font-medium hover:!bg-gray-200 border-none transition-all">
+                <Button variant="accent" className="px-6 py-2 rounded-none text-sm font-bold border-none transition-all uppercase tracking-widest">
                   Request Quote
                 </Button>
               </Link>
@@ -94,7 +94,7 @@ export function Navbar() {
 
             {/* Mobile Menu Button */}
             <button 
-              className="md:hidden text-white p-2"
+              className="md:hidden text-yellow-400 p-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? (
@@ -109,20 +109,34 @@ export function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && !isAuthPage && (
-        <div className="md:hidden bg-black border-t border-white/10 p-6 animate-in slide-in-from-top duration-300">
-          <div className="flex flex-col gap-6">
+        <div className="fixed inset-0 z-50 bg-black flex flex-col p-8">
+          <div className="flex justify-between items-center mb-12">
+            <span className="text-2xl font-black tracking-tight text-white uppercase">
+              Route<span className="text-yellow-400">233</span>
+            </span>
+            <button 
+              className="text-yellow-400 p-2"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
+          <div className="flex flex-col gap-8">
             {user ? (
               <>
                 <Link 
                   href={isAdmin ? '/admin/dashboard' : '/track'} 
-                  className="text-lg font-bold text-white"
+                  className="text-4xl font-bold text-white hover:text-yellow-400 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {isAdmin ? 'Dashboard' : 'My Locker'}
                 </Link>
                 <Link 
                   href="/profile" 
-                  className="text-lg font-bold text-white"
+                  className="text-4xl font-bold text-white hover:text-yellow-400 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Profile
@@ -132,7 +146,7 @@ export function Navbar() {
                     setIsMenuOpen(false);
                     supabase.auth.signOut().then(() => window.location.href = '/');
                   }}
-                  className="text-lg font-bold text-left text-gray-400"
+                  className="text-4xl font-bold text-left text-gray-500 hover:text-red-500 transition-colors"
                 >
                   Sign Out
                 </button>
@@ -141,29 +155,27 @@ export function Navbar() {
               <>
                 <Link 
                   href="/login" 
-                  className="text-lg font-bold text-white"
+                  className="text-4xl font-bold text-white hover:text-yellow-400 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Log in
                 </Link>
                 <Link 
                   href="/signup" 
+                  className="text-4xl font-bold text-white hover:text-yellow-400 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <Button className="w-full !bg-white !text-black py-4 text-lg rounded-none border-none">
-                    Sign up
-                  </Button>
+                  Sign up
                 </Link>
               </>
             )}
-            <hr className="border-white/10" />
+            <div className="h-[2px] w-12 bg-yellow-400 my-4" />
             <Link 
               href="/inquire"
+              className="text-4xl font-bold text-yellow-400 hover:text-white transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              <Button className="w-full !bg-white !text-black py-4 text-lg rounded-none border-none">
-                Request Quote
-              </Button>
+              Request Quote
             </Link>
           </div>
         </div>

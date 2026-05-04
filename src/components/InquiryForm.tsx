@@ -141,7 +141,7 @@ export default function InquiryForm() {
                   onClick={() => setCategory(cat)}
                   className={`py-2 px-1 border-2 transition-all capitalize font-bold text-[10px] md:text-xs ${
                     category === cat 
-                      ? 'border-black bg-black text-white' 
+                      ? 'border-yellow-400 bg-yellow-400 text-black' 
                       : 'border-gray-200 bg-white text-gray-400 hover:border-gray-300'
                   }`}
                 >

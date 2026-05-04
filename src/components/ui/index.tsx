@@ -10,6 +10,7 @@ export const Button = ({ variant = 'primary', isLoading, children, className, ..
   const variants = {
     primary: "bg-black text-white hover:bg-gray-800 border-black active:scale-[0.98]",
     secondary: "bg-gray-100 text-black hover:bg-gray-200 border-gray-100 active:scale-[0.98]",
+    accent: "bg-yellow-400 text-black hover:bg-yellow-500 border-yellow-400 active:scale-[0.98]",
     outline: "bg-white border-gray-300 text-black hover:border-black active:scale-[0.98]",
     danger: "bg-red-50 border-red-100 text-red-600 hover:bg-red-100 active:scale-[0.98]"
   };
@@ -36,7 +37,7 @@ export const Button = ({ variant = 'primary', isLoading, children, className, ..
 export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
   <input 
     {...props} 
-    className={`w-full px-4 py-3 bg-white border border-gray-300 rounded-none focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all ${props.className}`}
+    className={`w-full px-4 py-3 bg-white border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all ${props.className}`}
   />
 );
 

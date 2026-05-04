@@ -172,11 +172,11 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
           <div className="bg-gray-100 border border-gray-200 p-8 flex justify-between items-center">
             <div>
               <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Total Landed Cost</p>
-              <h3 className="text-4xl font-bold text-black">${totalUSD.toFixed(2)}</h3>
+              <h3 className="text-4xl font-bold text-yellow-500">${totalUSD.toFixed(2)}</h3>
             </div>
             <div className="text-right">
               <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">GHS Estimate (@ {formData.exchange_rate})</p>
-              <h3 className="text-4xl font-bold text-black">₵{totalGHS.toFixed(2)}</h3>
+              <h3 className="text-4xl font-bold text-yellow-500">₵{totalGHS.toFixed(2)}</h3>
             </div>
           </div>
 

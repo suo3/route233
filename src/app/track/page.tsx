@@ -186,7 +186,7 @@ function TrackingContent() {
                         <div className="relative hidden md:flex justify-between">
                           <div className="absolute top-5 left-0 w-full h-1 bg-gray-200 -z-0" />
                           <div 
-                            className="absolute top-5 left-0 h-1 bg-black transition-all duration-1000 -z-0" 
+                            className="absolute top-5 left-0 h-1 bg-yellow-400 transition-all duration-1000 -z-0" 
                             style={{ width: `${(getActiveIndex(shipment.status) / (STAGES.length - 1)) * 100}%` }}
                           />
 
@@ -195,12 +195,12 @@ function TrackingContent() {
                             return (
                               <div key={stage.id} className="relative z-10 flex flex-col items-center">
                                 <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all duration-500 ${
-                                  isActive ? 'bg-black text-white' : 'bg-white border-2 border-gray-200 text-gray-300'
+                                  isActive ? 'bg-yellow-400 text-black' : 'bg-white border-2 border-gray-200 text-gray-300'
                                 }`}>
                                   {stage.icon}
                                 </div>
                                 <p className={`mt-4 text-[9px] font-bold uppercase tracking-tighter text-center max-w-[60px] ${
-                                  isActive ? 'text-black' : 'text-gray-400'
+                                  isActive ? 'text-black font-black' : 'text-gray-400'
                                 }`}>
                                   {stage.label}
                                 </p>
@@ -216,13 +216,13 @@ function TrackingContent() {
                             return (
                               <div key={stage.id} className="flex items-center gap-4">
                                 <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0 ${
-                                  isActive ? 'bg-black text-white' : 'bg-white border-2 border-gray-200 text-gray-300'
+                                  isActive ? 'bg-yellow-400 text-black' : 'bg-white border-2 border-gray-200 text-gray-300'
                                 }`}>
                                   {stage.icon}
                                 </div>
-                                <div className="h-[1px] flex-grow bg-gray-200" />
+                                <div className={`h-[1px] flex-grow ${isActive ? 'bg-yellow-400' : 'bg-gray-200'}`} />
                                 <p className={`text-[10px] font-bold uppercase tracking-widest ${
-                                  isActive ? 'text-black' : 'text-gray-400'
+                                  isActive ? 'text-black font-black' : 'text-gray-400'
                                 }`}>
                                   {stage.label}
                                 </p>
