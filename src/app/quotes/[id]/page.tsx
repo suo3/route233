@@ -7,7 +7,7 @@ import { Button } from '@/components/ui';
 type Quote = {
   id: string;
   total_landed_cost_usd: number;
-  total_landed_cost_ghs: number;
+  total_ghs: number;
   exchange_rate: number;
   base_cost_usd: number;
   shipping_cost_usd: number;
@@ -99,7 +99,7 @@ export default function QuotePage() {
               </div>
               <div className="text-right">
                 <p className="text-xs text-slate-400 font-bold uppercase mb-1">Total in GHS</p>
-                <p className="text-4xl font-black text-blue-600 leading-none">₵{quote.total_landed_cost_ghs.toLocaleString()}</p>
+                <p className="text-4xl font-black text-blue-600 leading-none">₵{quote.total_ghs.toLocaleString()}</p>
               </div>
             </div>
           </div>

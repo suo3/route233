@@ -132,7 +132,7 @@ function TrackingContent() {
                     <div key={quote.id} className="bg-white rounded-[2rem] p-6 shadow-lg border border-red-100 flex items-center justify-between">
                       <div>
                         <h3 className="font-bold text-lg">{quote.route233_inquiries?.description}</h3>
-                        <p className="text-sm text-slate-500 mt-1">Total: ₵{quote.total_landed_cost_ghs?.toLocaleString()}</p>
+                        <p className="text-sm text-slate-500 mt-1">Total: ₵{quote.total_ghs?.toLocaleString()}</p>
                       </div>
                       <Button onClick={() => router.push(`/quotes/${quote.id}`)} className="bg-blue-600">View Quote</Button>
                     </div>
