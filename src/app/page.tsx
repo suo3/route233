@@ -13,7 +13,7 @@ export default function Home() {
               Operations Active
             </div>
             
-            <h1 className="text-6xl sm:text-7xl font-bold text-white leading-tight tracking-tight mb-8">
+            <h1 className="text-5xl sm:text-6xl font-bold text-white leading-tight tracking-tight mb-8">
               Sourcing from the US, <br/>made simple.
             </h1>
             
