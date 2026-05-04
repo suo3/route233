@@ -225,8 +225,8 @@ export default function AdminDashboard() {
         </Link>
         <header className="flex justify-between items-end mb-12">
           <div>
-            <h1 className="text-4xl font-bold mb-2 text-black">Route233 Admin</h1>
-            <p className="text-gray-500">Manage sourcing requests and track shipments.</p>
+            <h1 className="text-4xl font-bold mb-2 text-black dark:text-white">Route233 Admin</h1>
+            <p className="text-gray-500 dark:text-gray-400">Manage sourcing requests and track shipments.</p>
           </div>
           <div className="bg-gray-100 p-1 flex gap-1">
             {(['pending', 'quoted', 'shipments', 'rejected', 'users'] as const).map(tab => (
@@ -234,7 +234,7 @@ export default function AdminDashboard() {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-6 py-2 capitalize font-bold transition-all ${
-                  activeTab === tab ? 'bg-black text-white' : 'text-gray-500 hover:text-black'
+                  activeTab === tab ? 'bg-black text-white dark:bg-white dark:text-black' : 'text-gray-500 hover:text-black dark:hover:text-white'
                 }`}
               >
                 {tab}
