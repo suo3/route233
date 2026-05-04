@@ -116,38 +116,33 @@ export default function InquiryForm() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <div className="bg-white border border-gray-300 p-12">
-        <div className="mb-10 border-b border-gray-200 pb-8">
-          <h1 className="text-4xl font-bold text-black mb-2 tracking-tight">Request a Quote</h1>
-          <p className="text-gray-600">Tell us what you need from the US. We'll handle the sourcing, verification, and shipping.</p>
+    <div className="max-w-2xl mx-auto p-2 sm:p-4 md:p-6">
+      <div className="bg-white border border-gray-300 p-4 md:p-10">
+        <div className="mb-6 border-b border-gray-200 pb-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-black mb-1 tracking-tight">Request a Quote</h1>
+          <p className="text-gray-500 text-xs md:text-sm">Sourcing, verification, and shipping handled.</p>
         </div>
 
         {result && (
-          <div className={`mb-10 p-6 border ${result.success ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
-            <p className="font-bold text-lg mb-1">{result.success ? 'Request Received' : 'Action Required'}</p>
-            <p className="text-sm">{result.message || (result.success ? 'We are reviewing your request. Check your locker for updates.' : '')}</p>
-            {result.reason && (
-              <div className="mt-4 p-4 bg-white border border-red-200 text-xs font-mono text-red-900">
-                FLAGGED: {result.reason}
-              </div>
-            )}
+          <div className={`mb-6 p-4 border ${result.success ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
+            <p className="font-bold text-base mb-1">{result.success ? 'Request Received' : 'Action Required'}</p>
+            <p className="text-xs">{result.message || (result.success ? 'We are reviewing your request.' : '')}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <Label>Category</Label>
-            <div className="grid grid-cols-3 gap-3">
+            <Label className="text-[10px] uppercase tracking-wider mb-2 block">Category</Label>
+            <div className="grid grid-cols-3 gap-2">
               {(['general', 'electronics', 'automotive'] as Category[]).map((cat) => (
                 <button
                   key={cat}
                   type="button"
                   onClick={() => setCategory(cat)}
-                  className={`py-4 px-4 border-2 transition-all capitalize font-bold text-sm ${
+                  className={`py-2 px-1 border-2 transition-all capitalize font-bold text-[10px] md:text-xs ${
                     category === cat 
                       ? 'border-black bg-black text-white' 
-                      : 'border-gray-200 bg-white text-gray-500 hover:border-gray-400'
+                      : 'border-gray-200 bg-white text-gray-400 hover:border-gray-300'
                   }`}
                 >
                   {cat}
@@ -158,67 +153,60 @@ export default function InquiryForm() {
           </div>
 
           {isAnonymous && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-50 border border-gray-200">
-                <div className="col-span-full">
-                    <h3 className="font-bold text-black">Contact Information</h3>
-                    <p className="text-xs text-gray-500">Since you are not logged in, please provide contact details so we can send your quote.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 border border-gray-100">
+                <div className="col-span-full border-b border-gray-200 pb-2 mb-2">
+                    <h3 className="font-bold text-xs text-black">Contact Info</h3>
                 </div>
-                <div>
-                    <Label>Email Address</Label>
-                    <Input name="contact_email" type="email" placeholder="you@example.com" />
+                <div className="space-y-1">
+                    <Label className="text-[10px] uppercase">Email</Label>
+                    <Input name="contact_email" type="email" placeholder="you@example.com" className="h-10 text-sm" />
                 </div>
-                <div>
-                    <Label>Phone Number (WhatsApp preferred)</Label>
-                    <Input name="contact_phone" placeholder="+1234567890" />
+                <div className="space-y-1">
+                    <Label className="text-[10px] uppercase">Phone / WhatsApp</Label>
+                    <Input name="contact_phone" placeholder="+233..." className="h-10 text-sm" />
                 </div>
             </div>
           )}
 
-          <div>
-            <Label>Source URL (Optional)</Label>
-            <Input name="source_url" placeholder="e.g. Amazon, eBay, or Micro Center link" className="rounded-none border-gray-300 focus:border-black focus:ring-black" />
-            <p className="text-[10px] text-gray-500 mt-2 font-medium">Providing a link helps us find the exact item faster.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <Label className="text-[10px] uppercase">Source URL (Optional)</Label>
+              <Input name="source_url" placeholder="Paste link here" className="h-10 text-sm rounded-none border-gray-300 focus:border-black" />
+            </div>
+
+            {category === 'automotive' && (
+              <div className="space-y-1 animate-in fade-in slide-in-from-top-1">
+                <Label className="text-[10px] uppercase">VIN Number</Label>
+                <Input name="vin" placeholder="17-character VIN" maxLength={17} required className="h-10 text-sm rounded-none border-gray-300 focus:border-black" />
+              </div>
+            )}
           </div>
 
-          {category === 'automotive' && (
-            <div className="animate-in fade-in slide-in-from-top-2">
-              <Label>VIN Number</Label>
-              <Input name="vin" placeholder="17-character VIN" maxLength={17} required className="rounded-none border-gray-300 focus:border-black focus:ring-black" />
-              <p className="text-[10px] text-gray-500 mt-2 italic">Required for car parts and vehicle sourcing.</p>
-            </div>
-          )}
-
-          <div>
-            <Label>Detailed Description</Label>
+          <div className="space-y-1">
+            <Label className="text-[10px] uppercase">Detailed Description</Label>
             <textarea
               name="description"
               required
-              rows={4}
-              placeholder="e.g. 2018 Toyota Camry Alternator (OEM), or Refurbished MacBook Pro M1 16GB RAM."
-              className="w-full px-5 py-4 bg-white border border-gray-300 rounded-none focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all text-black"
+              rows={3}
+              placeholder="What are we looking for?"
+              className="w-full px-4 py-3 bg-white border border-gray-300 rounded-none focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all text-black text-sm"
             />
           </div>
 
-          <div>
-            <Label>Upload Reference Photos (Optional)</Label>
-            <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed bg-gray-50 hover:bg-gray-100 transition-colors">
-              <div className="space-y-1 text-center">
-                <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                  <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <div className="space-y-1">
+            <Label className="text-[10px] uppercase">Reference Photos</Label>
+            <div className="relative border-2 border-gray-200 border-dashed bg-gray-50 hover:bg-gray-100 transition-colors p-4 text-center">
+              <input name="images" type="file" multiple className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*" />
+              <div className="flex items-center justify-center gap-3">
+                <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <div className="flex justify-center text-sm text-gray-600">
-                  <label className="relative cursor-pointer bg-transparent font-bold text-black hover:underline">
-                    <span>Upload files</span>
-                    <input name="images" type="file" multiple className="sr-only" accept="image/*" />
-                  </label>
-                  <p className="pl-1">or drag and drop</p>
-                </div>
-                <p className="text-xs text-gray-500">PNG, JPG up to 10MB</p>
+                <p className="text-xs text-gray-500 font-bold uppercase">Tap to upload photos</p>
               </div>
             </div>
           </div>
 
-          <Button type="submit" isLoading={loading} className="w-full py-6 text-lg font-bold bg-black text-white hover:bg-gray-800 rounded-none border-none">
+          <Button type="submit" isLoading={loading} className="w-full py-4 text-sm font-bold bg-black text-white hover:bg-gray-800 rounded-none border-none uppercase tracking-widest">
             Submit Request
           </Button>
         </form>

@@ -90,13 +90,13 @@ function TrackingContent() {
         <Link href="/" className="inline-flex items-center text-sm font-bold text-gray-500 hover:text-black transition-colors mb-8 group">
           <span className="mr-2 group-hover:-translate-x-1 transition-transform">←</span> Back to Home
         </Link>
-        <header className="mb-12 flex flex-col gap-6 bg-white p-8 border border-gray-200">
-          <div className="flex justify-between items-center w-full">
+        <header className="mb-12 flex flex-col gap-6 bg-white p-6 md:p-8 border border-gray-200">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 w-full">
             <div>
-              <h1 className="text-3xl font-bold text-black tracking-tight">Your Locker</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-black tracking-tight">Your Locker</h1>
               <p className="text-gray-500 text-sm">Welcome back, {user?.user_metadata?.full_name || 'Customer'}</p>
             </div>
-            <Button onClick={() => router.push('/inquire')} className="bg-black text-white hover:bg-gray-800 rounded-none border-none">New Request</Button>
+            <Button onClick={() => router.push('/inquire')} className="w-full md:w-auto bg-black text-white hover:bg-gray-800 rounded-none border-none">New Request</Button>
           </div>
 
           {message && (
@@ -113,9 +113,9 @@ function TrackingContent() {
             <div className="animate-spin h-10 w-10 border-4 border-black border-t-transparent rounded-full" />
           </div>
         ) : isEmpty ? (
-          <div className="bg-white border border-gray-200 p-20 text-center">
+          <div className="bg-white border border-gray-200 p-10 md:p-20 text-center">
             <p className="text-gray-400 font-medium text-lg mb-6">Your locker is empty.</p>
-            <Button onClick={() => router.push('/inquire')} className="bg-black text-white rounded-none hover:bg-gray-800 border-none">Start Sourcing</Button>
+            <Button onClick={() => router.push('/inquire')} className="w-full md:w-auto bg-black text-white rounded-none hover:bg-gray-800 border-none">Start Sourcing</Button>
           </div>
         ) : (
           <div className="space-y-12">
@@ -129,12 +129,12 @@ function TrackingContent() {
                 </h2>
                 <div className="grid gap-6">
                   {data.quotes.map(quote => (
-                    <div key={quote.id} className="bg-gray-50 border border-black p-6 flex items-center justify-between">
+                    <div key={quote.id} className="bg-gray-50 border border-black p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                       <div>
                         <h3 className="font-bold text-lg text-black">{quote.route233_inquiries?.description}</h3>
                         <p className="text-sm text-gray-600 mt-1">Total: ₵{quote.total_ghs?.toLocaleString()}</p>
                       </div>
-                      <Button onClick={() => router.push(`/quotes/${quote.friendly_id || quote.id}`)} className="bg-black text-white hover:bg-gray-800 rounded-none border-none">View Quote</Button>
+                      <Button onClick={() => router.push(`/quotes/${quote.friendly_id || quote.id}`)} className="w-full md:w-auto bg-black text-white hover:bg-gray-800 rounded-none border-none">View Quote</Button>
                     </div>
                   ))}
                 </div>
@@ -147,12 +147,12 @@ function TrackingContent() {
                 <h2 className="text-xl font-bold text-black mb-4">Pending Requests</h2>
                 <div className="grid gap-6">
                   {data.inquiries.map(inquiry => (
-                    <div key={inquiry.id} className="bg-white border border-gray-200 p-6 flex items-center justify-between">
+                    <div key={inquiry.id} className="bg-white border border-gray-200 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                       <div>
                         <h3 className="font-bold text-black">{inquiry.description}</h3>
                         <p className="text-xs text-gray-500 uppercase font-bold mt-1 tracking-widest">{inquiry.status}</p>
                       </div>
-                      <div className="text-gray-500 text-sm font-medium">
+                      <div className="text-gray-500 text-sm font-medium italic">
                         {inquiry.status === 'rejected' ? 'Rejected' : 'Our team is working on it'}
                       </div>
                     </div>
@@ -168,21 +168,22 @@ function TrackingContent() {
                 <div className="grid gap-8">
                   {data.shipments.map(shipment => (
                     <div key={shipment.id} className="bg-white border border-gray-200">
-                      <div className="p-8 border-b border-gray-200 flex justify-between items-start">
+                      <div className="p-6 md:p-8 border-b border-gray-200 flex flex-col md:flex-row justify-between items-start gap-4">
                         <div>
                           <h2 className="text-xl font-bold text-black mb-2">{shipment.route233_quotes?.route233_inquiries?.description}</h2>
                           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
                             TRANSIT ID: {shipment.id.slice(0, 8).toUpperCase()}
                           </p>
                         </div>
-                        <div className="text-right">
+                        <div className="text-left md:text-right">
                           <p className="text-[10px] text-gray-500 font-bold uppercase mb-1">Status</p>
                           <p className="text-black font-bold text-sm uppercase tracking-tighter">{shipment.status.replace('_', ' ')}</p>
                         </div>
                       </div>
 
-                      <div className="p-10 bg-gray-50">
-                        <div className="relative flex justify-between">
+                      <div className="p-6 md:p-10 bg-gray-50">
+                        {/* Horizontal for Desktop, Vertical for Mobile */}
+                        <div className="relative hidden md:flex justify-between">
                           <div className="absolute top-5 left-0 w-full h-1 bg-gray-200 -z-0" />
                           <div 
                             className="absolute top-5 left-0 h-1 bg-black transition-all duration-1000 -z-0" 
@@ -207,9 +208,31 @@ function TrackingContent() {
                             );
                           })}
                         </div>
+
+                        {/* Mobile Vertical Stepper */}
+                        <div className="md:hidden space-y-4">
+                          {STAGES.map((stage, idx) => {
+                            const isActive = getActiveIndex(shipment.status) >= idx;
+                            return (
+                              <div key={stage.id} className="flex items-center gap-4">
+                                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0 ${
+                                  isActive ? 'bg-black text-white' : 'bg-white border-2 border-gray-200 text-gray-300'
+                                }`}>
+                                  {stage.icon}
+                                </div>
+                                <div className="h-[1px] flex-grow bg-gray-200" />
+                                <p className={`text-[10px] font-bold uppercase tracking-widest ${
+                                  isActive ? 'text-black' : 'text-gray-400'
+                                }`}>
+                                  {stage.label}
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
 
-                      <div className="p-8 bg-white flex justify-between items-center border-t border-gray-200">
+                      <div className="p-6 md:p-8 bg-white flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-t border-gray-200">
                         <div>
                           <p className="text-[10px] text-gray-500 font-bold uppercase mb-1">Current Location</p>
                           <p className="text-black font-bold">{shipment.current_location}</p>
@@ -221,7 +244,6 @@ function TrackingContent() {
                 </div>
               </section>
             )}
-
           </div>
         )}
       </div>
