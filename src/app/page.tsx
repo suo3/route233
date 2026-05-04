@@ -23,12 +23,12 @@ export default function Home() {
             
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/inquire">
-                <Button className="w-full sm:w-auto bg-white text-black text-lg py-7 px-10 rounded-none hover:bg-gray-200 transition-colors font-semibold">
+                <Button className="w-full sm:w-auto !bg-white !text-black text-lg py-7 px-10 rounded-none hover:!bg-gray-200 transition-colors font-semibold border-none">
                   Request a Quote
                 </Button>
               </Link>
               <Link href="/track">
-                <Button variant="outline" className="w-full sm:w-auto bg-black border-2 border-white text-white text-lg py-7 px-10 rounded-none hover:bg-white hover:text-black transition-colors font-semibold">
+                <Button variant="outline" className="w-full sm:w-auto !bg-black border-2 !border-white !text-white text-lg py-7 px-10 rounded-none hover:!bg-white hover:!text-black transition-colors font-semibold">
                   Track Delivery
                 </Button>
               </Link>
@@ -145,7 +145,7 @@ export default function Home() {
               <p className="text-gray-400 mb-12 text-xl leading-relaxed font-normal">Join the hundreds of Ghanaians who have stopped relying on family members abroad and started using a professional logistics pipeline.</p>
               
               <Link href="/inquire" className="block w-full">
-                <Button className="w-full bg-white text-black hover:bg-gray-200 py-8 text-xl font-bold rounded-none transition-colors border-none">
+                <Button className="w-full !bg-white !text-black hover:!bg-gray-200 py-8 text-xl font-bold rounded-none transition-colors border-none">
                   Request a Quote
                 </Button>
               </Link>

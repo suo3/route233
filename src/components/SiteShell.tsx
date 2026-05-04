@@ -74,7 +74,7 @@ export function Navbar() {
                   Log in
                 </Link>
                 <Link href="/signup">
-                  <Button className="bg-white text-black hover:bg-gray-200 text-sm rounded-none px-6 py-2 font-medium border-none">
+                  <Button className="!bg-white !text-black hover:!bg-gray-200 text-sm rounded-none px-6 py-2 font-medium border-none">
                     Sign up
                   </Button>
                 </Link>
@@ -82,7 +82,7 @@ export function Navbar() {
             )}
             <div className="h-6 w-[1px] mx-2 bg-white/20" />
             <Link href="/inquire">
-              <Button className="bg-white text-black px-6 py-2 rounded-none text-sm font-medium hover:bg-gray-200 border-none transition-all">
+              <Button className="!bg-white !text-black px-6 py-2 rounded-none text-sm font-medium hover:!bg-gray-200 border-none transition-all">
                 Request Quote
               </Button>
             </Link>
