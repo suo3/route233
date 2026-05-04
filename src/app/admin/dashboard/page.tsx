@@ -12,12 +12,14 @@ type Inquiry = {
   category: string;
   description: string;
   source_url: string;
+  contact_email?: string;
+  contact_phone?: string;
   rejection_reason?: string;
   created_at: string;
   route233_profiles: {
     full_name: string;
     phone_number: string;
-  };
+  } | null;
 };
 
 type Shipment = {
@@ -333,8 +335,8 @@ export default function AdminDashboard() {
                         {inquiry.category === 'automotive' ? '🚗' : inquiry.category === 'electronics' ? '⚡' : '📦'}
                       </div>
                       <div>
-                        <h3 className="font-bold text-lg">{inquiry.route233_profiles?.full_name || 'Anonymous User'}</h3>
-                        <p className="text-slate-400 text-sm">{inquiry.route233_profiles?.phone_number || 'No phone'}</p>
+                        <h3 className="font-bold text-lg">{inquiry.route233_profiles?.full_name || inquiry.contact_email || 'Anonymous User'}</h3>
+                        <p className="text-slate-400 text-sm">{inquiry.route233_profiles?.phone_number || inquiry.contact_phone || 'No phone'}</p>
                       </div>
                     </div>
                     <div className="text-right">

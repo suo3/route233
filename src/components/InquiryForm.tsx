@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 import { Button, Input, Label } from '@/components/ui';
@@ -10,8 +10,16 @@ type Category = 'electronics' | 'automotive' | 'general';
 export default function InquiryForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useState(true);
   const [category, setCategory] = useState<Category>('general');
   const [result, setResult] = useState<{ success: boolean; message?: string; reason?: string } | null>(null);
+
+  // Check login status on mount
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) setIsAnonymous(false);
+    });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,14 +32,21 @@ export default function InquiryForm() {
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Please login to submit a request');
+
+      const customer_id = user?.id;
+      let contact_email = formData.get('contact_email') as string | null;
+      let contact_phone = formData.get('contact_phone') as string | null;
+
+      if (!customer_id && !contact_email && !contact_phone) {
+        throw new Error('Please provide an email or phone number so we can contact you with the quote.');
+      }
 
       // 1. Upload images to Supabase Storage
       for (const file of files) {
         if (file.size > 0) {
           const fileExt = file.name.split('.').pop();
           const fileName = `${Math.random()}.${fileExt}`;
-          const filePath = `${user.id}/${fileName}`;
+          const filePath = `${customer_id || 'anonymous'}/${fileName}`;
 
           const { error: uploadError } = await supabase.storage
             .from('route233_inquiry_images')
@@ -47,7 +62,9 @@ export default function InquiryForm() {
       }
 
       const data = {
-        customer_id: user.id,
+        customer_id,
+        contact_email,
+        contact_phone,
         category: formData.get('category'),
         source_url: formData.get('source_url'),
         description: formData.get('description'),
@@ -68,7 +85,13 @@ export default function InquiryForm() {
       }
 
       if (json.success) {
-        router.push('/track?message=Request Received! We are reviewing your request. Check your locker for updates.&type=success');
+        if (!customer_id) {
+            setResult({ success: true, message: 'Request received! We will contact you via your provided email or phone with your quote.'});
+            (e.target as HTMLFormElement).reset();
+            setCategory('general');
+        } else {
+            router.push('/track?message=Request Received! We are reviewing your request. Check your locker for updates.&type=success');
+        }
       } else {
         setResult({
           success: json.success,
@@ -133,6 +156,23 @@ export default function InquiryForm() {
               <input type="hidden" name="category" value={category} />
             </div>
           </div>
+
+          {isAnonymous && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-blue-50/50 rounded-[2rem] border border-blue-100">
+                <div className="col-span-full">
+                    <h3 className="font-bold text-slate-800">Contact Information</h3>
+                    <p className="text-xs text-slate-500">Since you are not logged in, please provide contact details so we can send your quote.</p>
+                </div>
+                <div>
+                    <Label>Email Address</Label>
+                    <Input name="contact_email" type="email" placeholder="you@example.com" />
+                </div>
+                <div>
+                    <Label>Phone Number (WhatsApp preferred)</Label>
+                    <Input name="contact_phone" placeholder="+1234567890" />
+                </div>
+            </div>
+          )}
 
           <div>
             <Label>Source URL (Optional)</Label>

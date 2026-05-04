@@ -21,7 +21,9 @@ CREATE TABLE route233_profiles (
 -- Inquiries Table (Customer Requests)
 CREATE TABLE route233_inquiries (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    customer_id UUID REFERENCES route233_profiles(id) NOT NULL,
+    customer_id UUID REFERENCES route233_profiles(id),
+    contact_email TEXT,
+    contact_phone TEXT,
     status route233_inquiry_status DEFAULT 'pending' NOT NULL,
     category route233_item_category DEFAULT 'general' NOT NULL,
     source_url TEXT,
@@ -86,7 +88,7 @@ CREATE POLICY "Users can update own profile" ON route233_profiles FOR UPDATE USI
 
 -- Inquiries: Customers can view/create own, Admins view all
 CREATE POLICY "Customers can view own inquiries" ON route233_inquiries FOR SELECT USING (auth.uid() = customer_id OR EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND role = 'admin'));
-CREATE POLICY "Customers can create inquiries" ON route233_inquiries FOR INSERT WITH CHECK (auth.uid() = customer_id);
+CREATE POLICY "Customers can create inquiries" ON route233_inquiries FOR INSERT WITH CHECK (true);
 CREATE POLICY "Admins can update inquiries" ON route233_inquiries FOR UPDATE USING (EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND role = 'admin'));
 CREATE POLICY "Admins can delete inquiries" ON route233_inquiries FOR DELETE USING (EXISTS (SELECT 1 FROM route233_profiles WHERE id = auth.uid() AND role = 'admin'));
 

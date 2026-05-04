@@ -7,11 +7,15 @@ export async function POST(request: Request) {
   try {
     const adminSupabase = getAdminClient();
     const body = await request.json();
-    const { customer_id, category, source_url, description, vin, images } = body;
+    const { customer_id, contact_email, contact_phone, category, source_url, description, vin, images } = body;
 
     // Validate essential fields
-    if (!customer_id || !description) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    if (!description) {
+      return NextResponse.json({ error: 'Missing description' }, { status: 400 });
+    }
+    
+    if (!customer_id && !contact_email && !contact_phone) {
+      return NextResponse.json({ error: 'Contact information is required for anonymous requests' }, { status: 400 });
     }
 
     // Run Automated Gatekeeper Pre-screening
@@ -22,7 +26,9 @@ export async function POST(request: Request) {
       .from('route233_inquiries')
       .insert([
         {
-          customer_id,
+          customer_id: customer_id || null,
+          contact_email: contact_email || null,
+          contact_phone: contact_phone || null,
           category,
           source_url,
           description,
