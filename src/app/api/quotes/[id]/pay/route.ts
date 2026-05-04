@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase/client';
+import { getAdminClient } from '@/lib/supabase/client';
 import { initializePayment } from '@/lib/paystack';
 
 export async function POST(
@@ -9,8 +9,11 @@ export async function POST(
   try {
     const { id: quoteId } = await params;
 
+    const adminSupabase = getAdminClient();
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(quoteId);
+
     // 1. Fetch the quote and customer details
-    const { data: quote, error: quoteError } = await supabase
+    const { data: quote, error: quoteError } = await adminSupabase
       .from('route233_quotes')
       .select(`
         *,
@@ -21,7 +24,7 @@ export async function POST(
           )
         )
       `)
-      .eq('id', quoteId)
+      .eq(isUUID ? 'id' : 'friendly_id', quoteId)
       .single();
 
     if (quoteError || !quote) throw new Error('Quote not found');
@@ -29,9 +32,9 @@ export async function POST(
     // 2. Initialize Paystack
     // For demo purposes, we'll use a placeholder email. In a real app, get it from the profile.
     const email = 'customer@example.com';
-    const amountGHS = quote.total_landed_cost_ghs;
+    const amountGHS = quote.total_ghs;
 
-    const paystackSession = await initializePayment(email, amountGHS, quoteId);
+    const paystackSession = await initializePayment(email, amountGHS, quote.id);
 
     if (!paystackSession.status) {
       throw new Error(paystackSession.message || 'Paystack initialization failed');
