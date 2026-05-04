@@ -58,15 +58,15 @@ export default function QuotePage() {
     }
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-slate-50">Loading...</div>;
-  if (!quote) return <div className="min-h-screen flex items-center justify-center bg-slate-50 text-red-500">Quote not found.</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-white">Loading...</div>;
+  if (!quote) return <div className="min-h-screen flex items-center justify-center bg-white text-red-500">Quote not found.</div>;
 
   return (
-    <main className="min-h-screen bg-slate-50 py-12 px-4">
-      <div className="max-w-xl mx-auto bg-white rounded-3xl shadow-xl shadow-slate-200 border border-slate-100 overflow-hidden">
-        <div className="bg-blue-600 p-8 text-white">
-          <h1 className="text-3xl font-black mb-2">Your Quote</h1>
-          <p className="text-blue-100 text-sm opacity-80 uppercase tracking-widest font-bold">Landed Cost Estimate</p>
+    <main className="min-h-screen bg-white py-12 px-4">
+      <div className="max-w-xl mx-auto bg-white border border-gray-200">
+        <div className="bg-black p-8 text-white">
+          <h1 className="text-3xl font-bold mb-2">Your Quote</h1>
+          <p className="text-gray-400 text-sm opacity-80 uppercase tracking-widest font-bold">Landed Cost Estimate</p>
         </div>
 
         <div className="p-8">
@@ -76,43 +76,43 @@ export default function QuotePage() {
           </div>
 
           <div className="space-y-4 mb-8">
-            <div className="flex justify-between text-slate-600 text-sm">
+            <div className="flex justify-between text-gray-600 text-sm">
               <span>US Item Cost</span>
               <span>${quote.base_cost_usd.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between text-slate-600 text-sm">
+            <div className="flex justify-between text-gray-600 text-sm">
               <span>Shipping to Ghana</span>
               <span>${quote.shipping_cost_usd.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between text-slate-600 text-sm">
+            <div className="flex justify-between text-gray-600 text-sm">
               <span>Customs & Clearing (Est.)</span>
               <span>${quote.customs_estimate_usd.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between text-slate-600 text-sm">
+            <div className="flex justify-between text-gray-600 text-sm">
               <span>Service Fee</span>
               <span>${quote.service_fee_usd.toFixed(2)}</span>
             </div>
-            <div className="pt-4 border-t border-slate-100 flex justify-between items-end">
+            <div className="pt-4 border-t border-gray-200 flex justify-between items-end">
               <div>
-                <p className="text-xs text-slate-400 font-bold uppercase mb-1">Exchange Rate</p>
-                <p className="text-slate-600 font-medium text-sm">1 USD = ₵{quote.exchange_rate.toFixed(2)}</p>
+                <p className="text-xs text-gray-400 font-bold uppercase mb-1">Exchange Rate</p>
+                <p className="text-gray-600 font-medium text-sm">1 USD = ₵{quote.exchange_rate.toFixed(2)}</p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-slate-400 font-bold uppercase mb-1">Total in GHS</p>
-                <p className="text-4xl font-black text-blue-600 leading-none">₵{quote.total_ghs.toLocaleString()}</p>
+                <p className="text-xs text-gray-400 font-bold uppercase mb-1">Total in GHS</p>
+                <p className="text-4xl font-bold text-black leading-none">₵{quote.total_ghs.toLocaleString()}</p>
               </div>
             </div>
           </div>
 
           {quote.notes && (
-            <div className="mb-8 p-4 bg-slate-50 rounded-2xl border border-slate-100 italic text-slate-500 text-sm">
+            <div className="mb-8 p-4 bg-gray-50 border border-gray-200 italic text-gray-500 text-sm">
               "{quote.notes}"
             </div>
           )}
 
           <div className="flex gap-4">
             <Button 
-              className="flex-1 py-6 text-xl bg-blue-600 hover:bg-blue-700 rounded-2xl"
+              className="flex-1 py-6 text-xl bg-black text-white hover:bg-gray-800 rounded-none border-none"
               onClick={handlePay}
               isLoading={paying}
             >
@@ -120,14 +120,14 @@ export default function QuotePage() {
             </Button>
             <Button 
               variant="outline" 
-              className="px-6 py-6 border-slate-200 rounded-2xl"
+              className="px-6 py-6 border-gray-300 rounded-none bg-white text-black hover:bg-gray-100"
               onClick={() => window.print()}
             >
               🖨️
             </Button>
           </div>
           
-          <p className="mt-4 text-center text-xs text-slate-400">
+          <p className="mt-4 text-center text-xs text-gray-400">
             Secure payment powered by Paystack. Once paid, we'll start sourcing immediately.
           </p>
         </div>

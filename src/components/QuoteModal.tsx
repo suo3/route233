@@ -99,13 +99,13 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in">
-      <div className="bg-slate-900 border border-slate-800 w-full max-w-xl rounded-[2.5rem] overflow-hidden shadow-2xl">
-        <div className="p-8 border-b border-slate-800 flex justify-between items-center">
+      <div className="bg-white border border-gray-200 w-full max-w-xl shadow-2xl">
+        <div className="p-8 border-b border-gray-200 flex justify-between items-center bg-black text-white">
           <div>
-            <h2 className="text-2xl font-bold text-white tracking-tight">Landed Cost Calculator</h2>
-            <p className="text-slate-400 text-sm mt-1 truncate max-w-xs">{inquiry.description}</p>
+            <h2 className="text-2xl font-bold tracking-tight">Landed Cost Calculator</h2>
+            <p className="text-gray-400 text-sm mt-1 truncate max-w-xs">{inquiry.description}</p>
           </div>
-          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors text-2xl">&times;</button>
+          <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors text-2xl">&times;</button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-8 space-y-6">
@@ -114,7 +114,7 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
               <Label>Apply HS Code (Auto-calculate Duty)</Label>
               <select 
                 onChange={handleHsCodeChange}
-                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-white transition-all appearance-none"
+                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-none focus:outline-none focus:ring-1 focus:ring-black focus:border-black text-black transition-all appearance-none"
               >
                 <option value="">Select Item Type...</option>
                 {hsCodes.map(h => (
@@ -130,7 +130,7 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
                 required 
                 value={formData.base_cost_usd} 
                 onChange={e => setFormData({...formData, base_cost_usd: e.target.value})}
-                className="bg-slate-800 border-slate-700 text-white"
+                className="bg-white border-gray-300 text-black"
               />
             </div>
             <div>
@@ -141,7 +141,7 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
                 required 
                 value={formData.shipping_cost_usd} 
                 onChange={e => setFormData({...formData, shipping_cost_usd: e.target.value})}
-                className="bg-slate-800 border-slate-700 text-white"
+                className="bg-white border-gray-300 text-black"
               />
             </div>
           </div>
@@ -154,7 +154,7 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
                 step="0.01" 
                 value={formData.service_fee_usd} 
                 onChange={e => setFormData({...formData, service_fee_usd: e.target.value})}
-                className="bg-slate-800 border-slate-700 text-white"
+                className="bg-white border-gray-300 text-black"
               />
             </div>
             <div>
@@ -164,19 +164,19 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
                 step="0.01" 
                 value={formData.customs_estimate_usd} 
                 onChange={e => setFormData({...formData, customs_estimate_usd: e.target.value})}
-                className="bg-slate-800 border-slate-700 text-white"
+                className="bg-white border-gray-300 text-black"
               />
             </div>
           </div>
 
-          <div className="bg-blue-600/10 border border-blue-500/20 rounded-3xl p-8 flex justify-between items-center">
+          <div className="bg-gray-100 border border-gray-200 p-8 flex justify-between items-center">
             <div>
-              <p className="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-1">Total Landed Cost</p>
-              <h3 className="text-4xl font-black text-white">${totalUSD.toFixed(2)}</h3>
+              <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Total Landed Cost</p>
+              <h3 className="text-4xl font-bold text-black">${totalUSD.toFixed(2)}</h3>
             </div>
             <div className="text-right">
-              <p className="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-1">GHS Estimate (@ {formData.exchange_rate})</p>
-              <h3 className="text-4xl font-black text-blue-400">₵{totalGHS.toFixed(2)}</h3>
+              <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">GHS Estimate (@ {formData.exchange_rate})</p>
+              <h3 className="text-4xl font-bold text-black">₵{totalGHS.toFixed(2)}</h3>
             </div>
           </div>
 
@@ -186,16 +186,16 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
               value={formData.notes}
               onChange={e => setFormData({...formData, notes: e.target.value})}
               placeholder="e.g. Sourced from Delaware warehouse, zero sales tax applied."
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-white transition-all text-sm"
+              className="w-full px-4 py-3 bg-white border border-gray-300 rounded-none focus:outline-none focus:ring-1 focus:ring-black focus:border-black text-black transition-all text-sm"
               rows={3}
             />
           </div>
 
           <div className="flex gap-4 pt-4">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1 border-slate-700 text-slate-400 hover:bg-slate-800 py-6 text-lg">
+            <Button type="button" variant="outline" onClick={onClose} className="flex-1 border-gray-300 text-gray-600 hover:bg-gray-100 hover:border-gray-400 py-6 text-lg rounded-none">
               Cancel
             </Button>
-            <Button type="submit" isLoading={loading} className="flex-1 bg-blue-600 py-6 text-lg">
+            <Button type="submit" isLoading={loading} className="flex-1 bg-black text-white hover:bg-gray-800 py-6 text-lg rounded-none border-none">
               Send Quote
             </Button>
           </div>

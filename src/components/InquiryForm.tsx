@@ -117,18 +117,18 @@ export default function InquiryForm() {
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      <div className="bg-white rounded-[3rem] shadow-2xl shadow-slate-200 border border-slate-100 p-12">
-        <div className="mb-10">
-          <h1 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">Request a Quote</h1>
-          <p className="text-slate-500">Tell us what you need from the US. We'll handle the sourcing, verification, and shipping.</p>
+      <div className="bg-white border border-gray-300 p-12">
+        <div className="mb-10 border-b border-gray-200 pb-8">
+          <h1 className="text-4xl font-bold text-black mb-2 tracking-tight">Request a Quote</h1>
+          <p className="text-gray-600">Tell us what you need from the US. We'll handle the sourcing, verification, and shipping.</p>
         </div>
 
         {result && (
-          <div className={`mb-10 p-6 rounded-[2rem] border ${result.success ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'}`}>
+          <div className={`mb-10 p-6 border ${result.success ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
             <p className="font-bold text-lg mb-1">{result.success ? 'Request Received' : 'Action Required'}</p>
-            <p className="text-sm opacity-90">{result.message || (result.success ? 'We are reviewing your request. Check your locker for updates.' : '')}</p>
+            <p className="text-sm">{result.message || (result.success ? 'We are reviewing your request. Check your locker for updates.' : '')}</p>
             {result.reason && (
-              <div className="mt-4 p-4 bg-white/50 rounded-2xl border border-red-100 text-xs font-mono">
+              <div className="mt-4 p-4 bg-white border border-red-200 text-xs font-mono text-red-900">
                 FLAGGED: {result.reason}
               </div>
             )}
@@ -144,10 +144,10 @@ export default function InquiryForm() {
                   key={cat}
                   type="button"
                   onClick={() => setCategory(cat)}
-                  className={`py-4 px-4 rounded-2xl border-2 transition-all capitalize font-bold text-sm ${
+                  className={`py-4 px-4 border-2 transition-all capitalize font-bold text-sm ${
                     category === cat 
-                      ? 'border-blue-600 bg-blue-50 text-blue-700' 
-                      : 'border-slate-100 bg-slate-50 text-slate-400 hover:border-slate-200'
+                      ? 'border-black bg-black text-white' 
+                      : 'border-gray-200 bg-white text-gray-500 hover:border-gray-400'
                   }`}
                 >
                   {cat}
@@ -158,10 +158,10 @@ export default function InquiryForm() {
           </div>
 
           {isAnonymous && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-blue-50/50 rounded-[2rem] border border-blue-100">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-50 border border-gray-200">
                 <div className="col-span-full">
-                    <h3 className="font-bold text-slate-800">Contact Information</h3>
-                    <p className="text-xs text-slate-500">Since you are not logged in, please provide contact details so we can send your quote.</p>
+                    <h3 className="font-bold text-black">Contact Information</h3>
+                    <p className="text-xs text-gray-500">Since you are not logged in, please provide contact details so we can send your quote.</p>
                 </div>
                 <div>
                     <Label>Email Address</Label>
@@ -176,15 +176,15 @@ export default function InquiryForm() {
 
           <div>
             <Label>Source URL (Optional)</Label>
-            <Input name="source_url" placeholder="e.g. Amazon, eBay, or Micro Center link" />
-            <p className="text-[10px] text-slate-400 mt-2 font-medium">Providing a link helps us find the exact item faster.</p>
+            <Input name="source_url" placeholder="e.g. Amazon, eBay, or Micro Center link" className="rounded-none border-gray-300 focus:border-black focus:ring-black" />
+            <p className="text-[10px] text-gray-500 mt-2 font-medium">Providing a link helps us find the exact item faster.</p>
           </div>
 
           {category === 'automotive' && (
             <div className="animate-in fade-in slide-in-from-top-2">
               <Label>VIN Number</Label>
-              <Input name="vin" placeholder="17-character VIN" maxLength={17} required />
-              <p className="text-[10px] text-slate-400 mt-2 italic">Required for car parts and vehicle sourcing.</p>
+              <Input name="vin" placeholder="17-character VIN" maxLength={17} required className="rounded-none border-gray-300 focus:border-black focus:ring-black" />
+              <p className="text-[10px] text-gray-500 mt-2 italic">Required for car parts and vehicle sourcing.</p>
             </div>
           )}
 
@@ -195,31 +195,31 @@ export default function InquiryForm() {
               required
               rows={4}
               placeholder="e.g. 2018 Toyota Camry Alternator (OEM), or Refurbished MacBook Pro M1 16GB RAM."
-              className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-[1.5rem] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-slate-700"
+              className="w-full px-5 py-4 bg-white border border-gray-300 rounded-none focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all text-black"
             />
           </div>
 
           <div>
             <Label>Upload Reference Photos (Optional)</Label>
-            <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-slate-200 border-dashed rounded-[1.5rem] hover:border-blue-400 transition-colors">
+            <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed bg-gray-50 hover:bg-gray-100 transition-colors">
               <div className="space-y-1 text-center">
-                <svg className="mx-auto h-12 w-12 text-slate-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                   <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <div className="flex text-sm text-slate-600">
-                  <label className="relative cursor-pointer bg-white rounded-md font-bold text-blue-600 hover:text-blue-500">
+                <div className="flex justify-center text-sm text-gray-600">
+                  <label className="relative cursor-pointer bg-transparent font-bold text-black hover:underline">
                     <span>Upload files</span>
                     <input name="images" type="file" multiple className="sr-only" accept="image/*" />
                   </label>
                   <p className="pl-1">or drag and drop</p>
                 </div>
-                <p className="text-xs text-slate-500">PNG, JPG up to 10MB</p>
+                <p className="text-xs text-gray-500">PNG, JPG up to 10MB</p>
               </div>
             </div>
           </div>
 
-          <Button type="submit" isLoading={loading} className="w-full py-5 text-xl rounded-[1.5rem] shadow-xl shadow-blue-500/20">
-            Submit Sourcing Request
+          <Button type="submit" isLoading={loading} className="w-full py-6 text-lg font-bold bg-black text-white hover:bg-gray-800 rounded-none border-none">
+            Submit Request
           </Button>
         </form>
       </div>

@@ -225,16 +225,16 @@ export default function AdminDashboard() {
         </Link>
         <header className="flex justify-between items-end mb-12">
           <div>
-            <h1 className="text-4xl font-bold mb-2">Route233 Admin</h1>
-            <p className="text-slate-400">Manage sourcing requests and track shipments.</p>
+            <h1 className="text-4xl font-bold mb-2 text-black">Route233 Admin</h1>
+            <p className="text-gray-500">Manage sourcing requests and track shipments.</p>
           </div>
-          <div className="bg-slate-800 p-1 rounded-xl flex gap-1">
+          <div className="bg-gray-100 p-1 flex gap-1">
             {(['pending', 'quoted', 'shipments', 'rejected', 'users'] as const).map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-2 rounded-lg capitalize font-medium transition-all ${
-                  activeTab === tab ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200'
+                className={`px-6 py-2 capitalize font-bold transition-all ${
+                  activeTab === tab ? 'bg-black text-white' : 'text-gray-500 hover:text-black'
                 }`}
               >
                 {tab}
@@ -250,20 +250,20 @@ export default function AdminDashboard() {
         ) : activeTab === 'shipments' ? (
           <div className="grid gap-6">
             {shipments.length === 0 ? (
-              <div className="bg-slate-800/50 border border-slate-700/50 rounded-3xl p-20 text-center">
-                <p className="text-slate-500 font-medium italic">No active shipments found.</p>
+              <div className="bg-white border border-gray-200 p-20 text-center">
+                <p className="text-gray-500 font-medium italic">No active shipments found.</p>
               </div>
             ) : (
               shipments.map(shipment => (
-                <div key={shipment.id} className="bg-slate-800 border border-slate-700 rounded-3xl p-6 flex justify-between items-center">
+                <div key={shipment.id} className="bg-white border border-gray-200 p-6 flex justify-between items-center text-black">
                   <div>
                     <h3 className="font-bold text-lg mb-1">{shipment.route233_quotes.route233_inquiries.description}</h3>
-                    <p className="text-slate-400 text-sm">Customer: {shipment.route233_quotes.route233_inquiries.route233_profiles.full_name}</p>
-                    <p className="text-xs text-blue-400 mt-2 font-mono uppercase tracking-tighter">Location: {shipment.current_location}</p>
+                    <p className="text-gray-500 text-sm">Customer: {shipment.route233_quotes.route233_inquiries.route233_profiles.full_name}</p>
+                    <p className="text-xs text-black mt-2 font-mono uppercase tracking-tighter">Location: {shipment.current_location}</p>
                   </div>
                   <div className="flex gap-2">
                     <select 
-                      className="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="bg-white border border-gray-300 rounded-none px-4 py-2 text-sm text-black focus:outline-none focus:ring-1 focus:ring-black"
                       value={shipment.status}
                       onChange={(e) => updateShipmentStatus(shipment.id, e.target.value, shipment.current_location)}
                     >
@@ -294,20 +294,20 @@ export default function AdminDashboard() {
               <Button onClick={addUser}>+ Add New User</Button>
             </div>
             {users.length === 0 ? (
-              <div className="bg-slate-800/50 border border-slate-700/50 rounded-3xl p-20 text-center">
-                <p className="text-slate-500 font-medium italic">No users found.</p>
+              <div className="bg-white border border-gray-200 p-20 text-center">
+                <p className="text-gray-500 font-medium italic">No users found.</p>
               </div>
             ) : (
               users.map(u => (
-                <div key={u.id} className="bg-slate-800 border border-slate-700 rounded-3xl p-6 flex justify-between items-center">
+                <div key={u.id} className="bg-white border border-gray-200 p-6 flex justify-between items-center text-black">
                   <div>
                     <h3 className="font-bold text-lg mb-1">{u.profile?.full_name || 'No Name'}</h3>
-                    <p className="text-slate-400 text-sm">{u.email} &bull; {u.profile?.phone_number || 'No phone'}</p>
-                    <p className="text-xs text-slate-500 mt-2 font-mono uppercase tracking-tighter">
+                    <p className="text-gray-500 text-sm">{u.email} &bull; {u.profile?.phone_number || 'No phone'}</p>
+                    <p className="text-xs text-gray-400 mt-2 font-mono uppercase tracking-tighter">
                       Joined: {new Date(u.created_at).toLocaleDateString()} &bull; Role: {u.profile?.role || 'None'}
                     </p>
                   </div>
-                  <Button variant="outline" className="text-red-500 border-red-500 hover:bg-red-500/10" onClick={() => deleteUser(u.id)}>
+                  <Button variant="outline" className="text-red-600 border-red-600 hover:bg-red-50 rounded-none" onClick={() => deleteUser(u.id)}>
                     Delete User
                   </Button>
                 </div>
@@ -317,33 +317,33 @@ export default function AdminDashboard() {
         ) : (
           <div className="grid gap-6">
             {filteredInquiries.length === 0 ? (
-              <div className="bg-slate-800/50 border border-slate-700/50 rounded-3xl p-20 text-center">
-                <p className="text-slate-500 font-medium italic">No inquiries found in this category.</p>
+              <div className="bg-white border border-gray-200 p-20 text-center">
+                <p className="text-gray-500 font-medium italic">No inquiries found in this category.</p>
               </div>
             ) : (
               filteredInquiries.map(inquiry => (
                 <div 
                   key={inquiry.id} 
-                  className="bg-slate-800 border border-slate-700 rounded-3xl p-6 hover:border-slate-600 transition-all group"
+                  className="bg-white border border-gray-200 p-6 text-black group"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex gap-4">
-                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl ${
-                        inquiry.category === 'automotive' ? 'bg-orange-500/10 text-orange-500' :
-                        inquiry.category === 'electronics' ? 'bg-blue-500/10 text-blue-500' : 'bg-slate-500/10 text-slate-400'
+                      <div className={`w-12 h-12 flex items-center justify-center text-xl border ${
+                        inquiry.category === 'automotive' ? 'bg-orange-50 border-orange-200 text-orange-600' :
+                        inquiry.category === 'electronics' ? 'bg-blue-50 border-blue-200 text-blue-600' : 'bg-gray-50 border-gray-200 text-gray-500'
                       }`}>
                         {inquiry.category === 'automotive' ? '🚗' : inquiry.category === 'electronics' ? '⚡' : '📦'}
                       </div>
                       <div>
                         <h3 className="font-bold text-lg">{inquiry.route233_profiles?.full_name || inquiry.contact_email || 'Anonymous User'}</h3>
-                        <p className="text-slate-400 text-sm">{inquiry.route233_profiles?.phone_number || inquiry.contact_phone || 'No phone'}</p>
+                        <p className="text-gray-500 text-sm">{inquiry.route233_profiles?.phone_number || inquiry.contact_phone || 'No phone'}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs text-slate-500 uppercase tracking-widest mb-1">Status</p>
-                      <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
-                        inquiry.status === 'pending' ? 'bg-yellow-500/10 text-yellow-500' :
-                        inquiry.status === 'quoted' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
+                      <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">Status</p>
+                      <span className={`px-3 py-1 text-xs font-bold uppercase border ${
+                        inquiry.status === 'pending' ? 'bg-yellow-50 border-yellow-200 text-yellow-700' :
+                        inquiry.status === 'quoted' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'
                       }`}>
                         {inquiry.status}
                       </span>
@@ -353,16 +353,16 @@ export default function AdminDashboard() {
                   <div className="grid md:grid-cols-2 gap-6 mt-6">
                     <div className="space-y-4">
                       <div>
-                        <p className="text-xs text-slate-500 uppercase font-bold mb-2 tracking-tighter">Description</p>
-                        <p className="text-slate-200">{inquiry.description}</p>
+                        <p className="text-xs text-gray-400 uppercase font-bold mb-2 tracking-tighter">Description</p>
+                        <p className="text-black">{inquiry.description}</p>
                       </div>
                       {inquiry.source_url && (
                         <div>
-                          <p className="text-xs text-slate-500 uppercase font-bold mb-2 tracking-tighter">Sourcing URL</p>
+                          <p className="text-xs text-gray-400 uppercase font-bold mb-2 tracking-tighter">Sourcing URL</p>
                           <a 
                             href={inquiry.source_url} 
                             target="_blank" 
-                            className="text-blue-400 hover:underline text-sm break-all"
+                            className="text-black underline text-sm break-all"
                           >
                             {inquiry.source_url}
                           </a>
@@ -370,24 +370,23 @@ export default function AdminDashboard() {
                       )}
                     </div>
                     
-                    <div className="bg-slate-900/50 rounded-2xl p-6 border border-slate-700/50 flex flex-col justify-between">
+                    <div className="bg-gray-50 p-6 border border-gray-200 flex flex-col justify-between">
                       {inquiry.status === 'rejected' ? (
                         <div>
-                          <p className="text-xs text-red-400 uppercase font-bold mb-2">Rejection Reason</p>
-                          <p className="text-slate-300 text-sm italic">"{inquiry.rejection_reason}"</p>
-                          <Button variant="outline" className="mt-6 w-full text-xs py-2">Overrule & Approve</Button>
+                          <p className="text-xs text-red-600 uppercase font-bold mb-2">Rejection Reason</p>
+                          <p className="text-black text-sm italic">"{inquiry.rejection_reason}"</p>
+                          <Button variant="outline" className="mt-6 w-full text-xs py-2 rounded-none">Overrule & Approve</Button>
                         </div>
                       ) : (
                         <>
                           <div className="flex justify-between items-center mb-6">
                             <span className="text-sm font-bold">Landed Cost Quote</span>
-                            <span className={`text-xs px-2 py-1 rounded ${inquiry.status === 'quoted' ? 'bg-green-600/20 text-green-400' : 'bg-blue-600/20 text-blue-400'}`}>
+                            <span className={`text-xs px-2 py-1 font-bold ${inquiry.status === 'quoted' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-black text-white'}`}>
                               {inquiry.status === 'quoted' ? 'Sent to Customer' : 'Action Required'}
                             </span>
                           </div>
                           <Button 
-                            variant="primary" 
-                            className="w-full"
+                            className="w-full bg-black text-white hover:bg-gray-800 rounded-none border-none"
                             onClick={() => setSelectedInquiry(inquiry)}
                           >
                             {inquiry.status === 'quoted' ? 'Update Quote' : 'Generate Quote'}
@@ -397,14 +396,14 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   
-                  <div className="mt-6 pt-6 border-t border-slate-700/50 flex justify-between items-center text-xs text-slate-500">
+                  <div className="mt-6 pt-6 border-t border-gray-200 flex justify-between items-center text-xs text-gray-500">
                     <div className="flex gap-4">
                       <span>ID: {inquiry.id}</span>
                       <span>Received: {new Date(inquiry.created_at).toLocaleString()}</span>
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="outline" className="text-xs py-1 px-3" onClick={() => editInquiry(inquiry)}>Edit</Button>
-                      <Button variant="outline" className="text-xs py-1 px-3 text-red-500 border-red-500 hover:bg-red-500/10" onClick={() => deleteInquiry(inquiry.id)}>Delete</Button>
+                      <Button variant="outline" className="text-xs py-1 px-3 rounded-none" onClick={() => editInquiry(inquiry)}>Edit</Button>
+                      <Button variant="outline" className="text-xs py-1 px-3 text-red-600 border-red-600 hover:bg-red-50 rounded-none" onClick={() => deleteInquiry(inquiry.id)}>Delete</Button>
                     </div>
                   </div>
                 </div>

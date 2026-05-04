@@ -62,18 +62,18 @@ function LoginContent() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
-      <div className="w-full max-w-md bg-white rounded-[3rem] shadow-2xl shadow-slate-200 border border-slate-100 p-12">
+    <main className="min-h-screen flex items-center justify-center bg-white p-6">
+      <div className="w-full max-w-md bg-white border border-gray-200 p-12">
         <div className="text-center mb-10">
-          <Link href="/" className="text-2xl font-black text-slate-900 tracking-tighter mb-4 inline-block">
-            ROUTE<span className="text-blue-600">233</span>
+          <Link href="/" className="text-2xl font-black text-black tracking-tighter mb-4 inline-block">
+            ROUTE233
           </Link>
-          <h1 className="text-3xl font-bold text-slate-900">Welcome Back</h1>
-          <p className="text-slate-500 mt-2">Access your digital locker</p>
+          <h1 className="text-3xl font-bold text-black">Welcome Back</h1>
+          <p className="text-gray-500 mt-2">Access your digital locker</p>
         </div>
 
         {message && (
-          <div className={`mb-6 p-4 rounded-2xl text-sm border ${
+          <div className={`mb-6 p-4 rounded-none text-sm border ${
             messageType === 'success' ? 'bg-green-50 border-green-100 text-green-700' : 'bg-red-50 border-red-100 text-red-600'
           }`}>
             {message}
@@ -89,6 +89,7 @@ function LoginContent() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@example.com"
+              className="rounded-none border-gray-300 focus:border-black focus:ring-black"
             />
           </div>
           <div>
@@ -99,16 +100,17 @@ function LoginContent() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
+              className="rounded-none border-gray-300 focus:border-black focus:ring-black"
             />
           </div>
-          <Button type="submit" isLoading={loading} className="w-full py-4 text-lg">
+          <Button type="submit" isLoading={loading} className="w-full py-4 text-lg bg-black text-white hover:bg-gray-800 rounded-none border-none">
             Sign In
           </Button>
         </form>
 
-        <p className="mt-8 text-center text-slate-500 text-sm">
+        <p className="mt-8 text-center text-gray-500 text-sm">
           Don't have an account?{' '}
-          <Link href="/signup" className="text-blue-600 font-bold hover:underline">
+          <Link href="/signup" className="text-black font-bold hover:underline">
             Create one free
           </Link>
         </p>

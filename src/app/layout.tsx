@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Navbar, Footer } from "@/components/SiteShell";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Route233 | Professional USA to Ghana Sourcing & Logistics",
@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-full flex flex-col bg-slate-50`} suppressHydrationWarning>
+      <body className={`${font.className} min-h-full flex flex-col bg-white`} suppressHydrationWarning>
         <Navbar />
         <div className="flex-grow pt-20">
           {children}

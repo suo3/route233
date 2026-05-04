@@ -6,12 +6,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button = ({ variant = 'primary', isLoading, children, className, ...props }: ButtonProps) => {
-  const baseStyles = "px-6 py-3 rounded-xl font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center";
+  const baseStyles = "px-6 py-3 font-bold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center border";
   const variants = {
-    primary: "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/20 active:scale-[0.98]",
-    secondary: "bg-slate-800 text-white hover:bg-slate-900 active:scale-[0.98]",
-    outline: "border-2 border-slate-200 text-slate-700 hover:border-blue-600 hover:text-blue-600 active:scale-[0.98]",
-    danger: "bg-red-50 text-red-600 hover:bg-red-100 active:scale-[0.98]"
+    primary: "bg-black text-white hover:bg-gray-800 border-black active:scale-[0.98]",
+    secondary: "bg-gray-100 text-black hover:bg-gray-200 border-gray-100 active:scale-[0.98]",
+    outline: "bg-white border-gray-300 text-black hover:border-black active:scale-[0.98]",
+    danger: "bg-red-50 border-red-100 text-red-600 hover:bg-red-100 active:scale-[0.98]"
   };
 
   return (
@@ -36,12 +36,12 @@ export const Button = ({ variant = 'primary', isLoading, children, className, ..
 export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
   <input 
     {...props} 
-    className={`w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all ${props.className}`}
+    className={`w-full px-4 py-3 bg-white border border-gray-300 rounded-none focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all ${props.className}`}
   />
 );
 
 export const Label = ({ children }: { children: React.ReactNode }) => (
-  <label className="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wider">
+  <label className="block text-sm font-bold text-black mb-2 uppercase tracking-wider">
     {children}
   </label>
 );
