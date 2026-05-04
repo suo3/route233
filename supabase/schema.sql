@@ -37,7 +37,7 @@ CREATE TABLE route233_inquiries (
 CREATE TABLE route233_quotes (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     inquiry_id UUID REFERENCES route233_inquiries(id) ON DELETE CASCADE NOT NULL,
-    admin_id UUID REFERENCES route233_profiles(id) NOT NULL,
+    admin_id UUID REFERENCES route233_profiles(id) ON DELETE CASCADE NOT NULL,
     base_cost_usd NUMERIC(12, 2) NOT NULL,
     shipping_cost_usd NUMERIC(12, 2) NOT NULL,
     service_fee_usd NUMERIC(12, 2) NOT NULL,

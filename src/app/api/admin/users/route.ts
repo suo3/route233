@@ -11,10 +11,10 @@ export async function GET(request: Request) {
     
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     
-    const { data: profile } = await supabase.from('route233_profiles').select('role').eq('id', user.id).single();
+    const adminClient = getAdminClient();
+    const { data: profile } = await adminClient.from('route233_profiles').select('role').eq('id', user.id).single();
     if (profile?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
-    const adminClient = getAdminClient();
     const { data: { users }, error } = await adminClient.auth.admin.listUsers();
     
     if (error) throw error;
@@ -45,14 +45,14 @@ export async function DELETE(request: Request) {
     
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     
-    const { data: profile } = await supabase.from('route233_profiles').select('role').eq('id', user.id).single();
+    const adminClient = getAdminClient();
+    const { data: profile } = await adminClient.from('route233_profiles').select('role').eq('id', user.id).single();
     if (profile?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
     const url = new URL(request.url);
     const userId = url.searchParams.get('id');
     if (!userId) return NextResponse.json({ error: 'User ID required' }, { status: 400 });
 
-    const adminClient = getAdminClient();
     const { error } = await adminClient.auth.admin.deleteUser(userId);
     
     if (error) throw error;
@@ -73,7 +73,8 @@ export async function POST(request: Request) {
     
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     
-    const { data: profile } = await supabase.from('route233_profiles').select('role').eq('id', user.id).single();
+    const adminClient = getAdminClient();
+    const { data: profile } = await adminClient.from('route233_profiles').select('role').eq('id', user.id).single();
     if (profile?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
     const body = await request.json();
@@ -83,7 +84,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const adminClient = getAdminClient();
     const { data: newAuthUser, error: createError } = await adminClient.auth.admin.createUser({
       email,
       password,
