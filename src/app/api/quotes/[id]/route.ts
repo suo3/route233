@@ -1,13 +1,16 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase/client';
+import { getAdminClient } from '@/lib/supabase/client';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const adminSupabase = getAdminClient();
     const { id } = await params;
-    const { data, error } = await supabase
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
+    
+    const { data, error } = await adminSupabase
       .from('route233_quotes')
       .select(`
         *,
@@ -15,7 +18,7 @@ export async function GET(
           description
         )
       `)
-      .eq('id', id)
+      .eq(isUUID ? 'id' : 'friendly_id', id)
       .single();
 
     if (error) throw error;

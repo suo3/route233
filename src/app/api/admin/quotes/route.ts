@@ -23,6 +23,8 @@ export async function POST(request: Request) {
     const rate = exchange_rate || 13.50; // Default or provided rate
     const total_ghs = total_usd * rate;
 
+    const friendly_id = `QT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
     // Start a transaction-like flow (Supabase RPC or sequential calls)
     // 1. Create the quote
     const { data: quote, error: quoteError } = await adminSupabase
@@ -31,6 +33,7 @@ export async function POST(request: Request) {
         {
           inquiry_id,
           admin_id,
+          friendly_id,
           base_cost_usd,
           shipping_cost_usd,
           service_fee_usd,
