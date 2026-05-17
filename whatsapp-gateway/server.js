@@ -15,6 +15,7 @@ app.use(express.json());
 
 let sock;
 let connectionStatus = 'initializing';
+let latestQr = null;
 
 // Start Baileys WhatsApp Connection
 async function connectToWhatsApp() {
@@ -47,6 +48,7 @@ async function connectToWhatsApp() {
       console.log('\n--- SCAN THIS QR CODE WITH YOUR WHATSAPP (Settings > Linked Devices) ---\n');
       qrcode.generate(qr, { small: true });
       console.log('\n----------------------------------------------------------------------\n');
+      latestQr = qr;
       connectionStatus = 'awaiting_qr_scan';
     }
 
@@ -54,12 +56,14 @@ async function connectToWhatsApp() {
       const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
       console.log('WhatsApp connection closed due to:', lastDisconnect?.error || 'Unknown Error', '. Reconnecting:', shouldReconnect);
       connectionStatus = 'disconnected';
+      latestQr = null;
       if (shouldReconnect) {
         connectToWhatsApp();
       }
     } else if (connection === 'open') {
       console.log('🚀 WhatsApp Gateway is CONNECTED and READY!');
       connectionStatus = 'connected';
+      latestQr = null;
     }
   });
 
@@ -76,6 +80,79 @@ function authenticate(req, res, next) {
   }
   next();
 }
+
+// Endpoint to view the perfect QR code in the browser
+app.get('/qr', (req, res) => {
+  if (connectionStatus === 'connected') {
+    return res.send(`
+      <html>
+        <body style="background-color: #121212; color: #4ade80; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+          <div style="text-align: center;">
+            <h2>🚀 WhatsApp Gateway is already CONNECTED and READY!</h2>
+            <p style="color: #a3a3a3;">You do not need to scan a QR code.</p>
+          </div>
+        </body>
+      </html>
+    `);
+  }
+
+  if (!latestQr) {
+    return res.send(`
+      <html>
+        <body style="background-color: #121212; color: #ffffff; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+          <div style="text-align: center;">
+            <h2>Generating QR code...</h2>
+            <p style="color: #a3a3a3;">Please wait a moment and refresh this page.</p>
+          </div>
+        </body>
+      </html>
+    `);
+  }
+
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=${encodeURIComponent(latestQr)}`;
+
+  res.send(`
+    <html>
+      <head>
+        <title>Scan WhatsApp QR Code</title>
+        <style>
+          body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+          }
+          .card {
+            background-color: #1e1e1e;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 400px;
+          }
+          img {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 25px 0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="card">
+          <h2 style="margin-top: 0; color: #4ade80;">Route233 WhatsApp</h2>
+          <p style="color: #d4d4d4; font-size: 15px; line-height: 1.5;">Scan this QR code with your WhatsApp app<br>(Settings > Linked Devices)</p>
+          <img src="${qrImageUrl}" alt="WhatsApp QR Code" />
+          <p style="color: #a3a3a3; font-size: 13px;">Refreshing this page will fetch a fresh code if this one expires.</p>
+        </div>
+      </body>
+    </html>
+  `);
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
