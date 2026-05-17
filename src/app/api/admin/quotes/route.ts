@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getAdminClient } from '@/lib/supabase/client';
+import { notify } from '@/lib/notifications';
 
 export async function POST(request: Request) {
   try {
@@ -57,7 +58,28 @@ export async function POST(request: Request) {
     if (inquiryError) throw inquiryError;
 
     // 3. Trigger WhatsApp notification to the Customer
-    // notifyCustomerOfQuote(inquiry_id, total_ghs);
+    try {
+      const { data: inquiry } = await adminSupabase
+        .from('route233_inquiries')
+        .select('contact_phone, route233_profiles(phone_number)')
+        .eq('id', inquiry_id)
+        .single();
+
+      const customerPhone = inquiry?.contact_phone || (inquiry?.route233_profiles as any)?.phone_number;
+
+      if (customerPhone) {
+        await notify.quoteReady(
+          customerPhone,
+          total_ghs.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+          friendly_id || quote.id
+        );
+        console.log(`WhatsApp quote alert successfully sent to ${customerPhone}`);
+      } else {
+        console.warn(`Could not send WhatsApp alert: No phone number found for inquiry ${inquiry_id}`);
+      }
+    } catch (notifyErr) {
+      console.error('Failed to trigger WhatsApp quote notification:', notifyErr);
+    }
 
     return NextResponse.json({ success: true, data: quote });
   } catch (error: any) {

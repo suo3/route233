@@ -23,15 +23,20 @@ export function OnboardingCheck() {
 
       if (isExcluded) return;
 
-      // 3. Fetch profile to check if phone_number is present
+      // 3. Fetch profile to check if phone_number is present and if they are an admin
       const { data: profile, error } = await supabase
         .from('route233_profiles')
-        .select('phone_number')
+        .select('phone_number, role')
         .eq('id', user.id)
         .single();
 
       if (error) {
         console.error('Error fetching profile onboarding status:', error);
+        return;
+      }
+
+      // Admin role bypass onboarding requirements
+      if (profile?.role === 'admin') {
         return;
       }
 
