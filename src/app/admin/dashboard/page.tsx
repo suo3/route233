@@ -375,10 +375,33 @@ export default function AdminDashboard() {
                           <a 
                             href={inquiry.source_url} 
                             target="_blank" 
-                            className="text-black underline text-sm break-all"
+                            className="text-black underline text-sm break-all font-medium"
                           >
                             {inquiry.source_url}
                           </a>
+                        </div>
+                      )}
+                      {inquiry.images && inquiry.images.length > 0 && (
+                        <div>
+                          <p className="text-xs text-gray-400 uppercase font-bold mb-2 tracking-tighter">Reference Photos ({inquiry.images.length})</p>
+                          <div className="flex flex-wrap gap-2 mt-1">
+                            {inquiry.images.map((img: string, idx: number) => (
+                              <a 
+                                key={idx} 
+                                href={img} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="w-20 h-20 border border-gray-300 hover:border-black transition-all bg-gray-50 flex items-center justify-center overflow-hidden hover:scale-105 active:scale-95 duration-200"
+                                title="Click to view full image"
+                              >
+                                <img 
+                                  src={img} 
+                                  alt={`Reference ${idx + 1}`} 
+                                  className="w-full h-full object-cover" 
+                                />
+                              </a>
+                            ))}
+                          </div>
                         </div>
                       )}
                     </div>
