@@ -236,7 +236,7 @@ export default function AdminDashboard() {
         </Link>
         <header className="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-8 mb-12">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold mb-2 text-black dark:text-white">Route233 Admin</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2 text-black dark:text-white">233 Logistics Admin</h1>
             <p className="text-gray-500 dark:text-gray-400">Manage sourcing requests and track shipments.</p>
           </div>
           <div className="bg-gray-100 dark:bg-gray-800 p-1 flex gap-1 overflow-x-auto no-scrollbar w-full lg:w-auto">

@@ -7,7 +7,7 @@ import { OnboardingCheck } from "@/components/OnboardingCheck";
 const font = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Route233 | Professional USA to Ghana Sourcing & Logistics",
+  title: "233 Logistics | Professional USA to Ghana Sourcing & Logistics",
   description: "Your personal sourcing agent in the United States. We find, verify, and ship car parts and electronics from Philly/Delaware to Ghana.",
 };
 

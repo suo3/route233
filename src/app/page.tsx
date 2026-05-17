@@ -124,7 +124,7 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-24 items-center">
             <div>
               <h2 className="text-4xl md:text-5xl font-bold text-black mb-16 tracking-tight">
-                The Route233 Advantage
+                The 233 Logistics Advantage
               </h2>
               <div className="space-y-12">
                 {[

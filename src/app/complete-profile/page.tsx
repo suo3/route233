@@ -90,7 +90,7 @@ function CompleteProfileContent() {
     }
 
     setLoading(false);
-    router.push('/track?message=Welcome to Route233! WhatsApp tracking notifications are now active.&type=success');
+    router.push('/track?message=Welcome to 233 Logistics! WhatsApp tracking notifications are now active.&type=success');
   };
 
   if (!user) {
@@ -106,7 +106,7 @@ function CompleteProfileContent() {
       <div className="w-full max-w-md bg-white border border-gray-200 p-12">
         <div className="text-center mb-8">
           <span className="text-2xl font-black text-black tracking-tighter mb-4 inline-block">
-            ROUTE233
+            233 LOGISTICS
           </span>
           <h1 className="text-3xl font-bold text-black tracking-tight">Complete Setup</h1>
           <p className="text-gray-500 mt-2 text-sm">Connect your profile to receive instant tracking updates</p>

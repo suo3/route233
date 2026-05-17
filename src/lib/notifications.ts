@@ -107,7 +107,7 @@ export const notify = {
     sendWhatsAppMessage(adminPhone, `🚀 New Sourcing Request: "${inquiryDesc}". Check your admin dashboard.`),
   
   quoteReady: (customerPhone: string, quoteAmount: string, quoteId: string) =>
-    sendWhatsAppMessage(customerPhone, `💰 Your quote is ready! Landed Cost: ${quoteAmount} GHS. View details and pay here: https://route233.com/quotes/${quoteId}`),
+    sendWhatsAppMessage(customerPhone, `💰 Your quote is ready! Landed Cost: ${quoteAmount} GHS. View details and pay here: https://www.233logistics.com/quotes/${quoteId}`),
   
   paymentSuccess: (customerPhone: string, trackingNum: string) =>
     sendWhatsAppMessage(customerPhone, `✅ Payment Received! Your item is now being processed at our Philly Hub. Tracking: ${trackingNum || 'Pending'}`),

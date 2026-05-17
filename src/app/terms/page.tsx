@@ -15,7 +15,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-bold text-black mb-4">1. Sourcing and Procurement</h2>
             <p>
-              Route233 acts as a sourcing agent and logistics facilitator. When you submit an inquiry, we provide a "Landed Cost" quote which includes the purchase price, US domestic shipping, international freight, and estimated Ghana customs duties. We are not the original manufacturer of the items sourced.
+              233 Logistics acts as a sourcing agent and logistics facilitator. When you submit an inquiry, we provide a "Landed Cost" quote which includes the purchase price, US domestic shipping, international freight, and estimated Ghana customs duties. We are not the original manufacturer of the items sourced.
             </p>
           </section>
 
@@ -29,7 +29,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-bold text-black mb-4">3. Prohibited Items</h2>
             <p>
-              Route233 complies with all US Export and Ghana Import regulations. We do not source or ship:
+              233 Logistics complies with all US Export and Ghana Import regulations. We do not source or ship:
             </p>
             <ul className="list-disc pl-6 mt-4 space-y-2">
               <li>Hazardous materials or chemicals</li>
@@ -49,7 +49,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-bold text-black mb-4">5. Customs and Delivery</h2>
             <p>
-              While we provide an estimated "Landed Cost" that includes duties, Ghana Customs final valuations may vary. Route233 covers standard duty variations, but in the event of extreme revaluation by customs authorities, we will consult with the customer before clearing.
+              While we provide an estimated "Landed Cost" that includes duties, Ghana Customs final valuations may vary. 233 Logistics covers standard duty variations, but in the event of extreme revaluation by customs authorities, we will consult with the customer before clearing.
             </p>
           </section>
 

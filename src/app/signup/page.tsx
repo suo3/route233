@@ -93,10 +93,10 @@ export default function SignupPage() {
       <div className="w-full max-w-md bg-white border border-gray-200 p-12">
         <div className="text-center mb-10">
           <Link href="/" className="text-2xl font-black text-black tracking-tighter mb-4 inline-block">
-            ROUTE233
+            233 LOGISTICS
           </Link>
           <h1 className="text-3xl font-bold text-black">Start Sourcing</h1>
-          <p className="text-gray-500 mt-2">Create your Route233 account</p>
+          <p className="text-gray-500 mt-2">Create your 233 Logistics account</p>
         </div>
 
         {message && (

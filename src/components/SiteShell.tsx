@@ -50,7 +50,7 @@ export function Navbar() {
     <nav className="fixed top-0 w-full z-50 bg-black border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <Link href="/" className="text-2xl font-black tracking-tight text-white uppercase">
-          Route<span className="text-yellow-400">233</span>
+          233<span className="text-yellow-400"> Logistics</span>
         </Link>
         
         {!isAuthPage && (
@@ -112,7 +112,7 @@ export function Navbar() {
         <div className="fixed inset-0 z-50 bg-black flex flex-col p-8">
           <div className="flex justify-between items-center mb-12">
             <span className="text-2xl font-black tracking-tight text-white uppercase">
-              Route<span className="text-yellow-400">233</span>
+              233<span className="text-yellow-400"> Logistics</span>
             </span>
             <button 
               className="text-yellow-400 p-2"
@@ -189,7 +189,7 @@ export function Footer() {
     <footer className="py-24 bg-black text-center">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-2xl font-black text-white tracking-tight mb-4">
-          ROUTE233
+          233 LOGISTICS
         </div>
         <p className="text-gray-400 text-sm max-w-md mx-auto leading-relaxed mb-10 font-medium">
           Professional logistics and sourcing bridging the gap between US retailers and the Ghanaian market.

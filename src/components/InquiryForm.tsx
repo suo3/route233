@@ -275,7 +275,7 @@ export default function InquiryForm() {
       </div>
 
       <div className="mt-12 text-center">
-        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">Route233 Sourcing Engine &bull; USA &bull; GHA</p>
+        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">233 Logistics Sourcing Engine &bull; USA &bull; GHA</p>
       </div>
     </div>
   );
