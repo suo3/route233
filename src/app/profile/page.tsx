@@ -197,7 +197,7 @@ function ProfileContent() {
                 className="w-full px-5 py-4 bg-white border border-gray-300 rounded-none focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all font-medium text-black appearance-none"
               >
                 <option value="Ghana">Accra, Ghana (Local Delivery / Pickup)</option>
-                <option value="USA">Philadelphia, USA (US Hub Pickup)</option>
+                <option value="USA">United States (US Hub Pickup)</option>
               </select>
             </div>
 
@@ -224,3 +224,4 @@ export default function ProfilePage() {
     </Suspense>
   );
 }
+

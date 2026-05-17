@@ -18,7 +18,7 @@ export default function Home() {
             </h1>
             
             <p className="text-xl text-gray-300 mb-12 leading-relaxed max-w-xl font-normal">
-              Find, verify, and ship auto parts and electronics from Philadelphia to Ghana. One landed cost. No hidden fees.
+              Find, verify, and ship auto parts and electronics from the United States to Ghana. One landed cost. No hidden fees.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
@@ -60,7 +60,7 @@ export default function Home() {
                    </div>
                    <div>
                      <p className="text-black font-bold">Cleared US Customs</p>
-                     <p className="text-gray-500 text-sm mt-1">Philadelphia Hub</p>
+                     <p className="text-gray-500 text-sm mt-1">US Hub</p>
                    </div>
                  </div>
                  <div className="flex items-start gap-4">
@@ -128,8 +128,8 @@ export default function Home() {
               </h2>
               <div className="space-y-12">
                 {[
-                  { t: "Tax-Free Sourcing", d: "We utilize our Delaware warehouse to zero out US sales tax, saving you 8-10% upfront on every purchase." },
-                  { t: "Physical Quality Control", d: "Every refurbished electronic device and car part is physically inspected at our Philly hub before it boards a plane." },
+                  { t: "Tax-Free Sourcing", d: "We utilize our tax-free US warehouse to zero out US sales tax, saving you 8-10% upfront on every purchase." },
+                  { t: "Physical Quality Control", d: "Every refurbished electronic device and car part is physically inspected at our US hub before it boards a plane." },
                   { t: "Locked-in Cedi Payments", d: "Pay in GHS using Mobile Money. Our high-volume currency hedging means no dollar card hassles and better rates." }
                 ].map((item, idx) => (
                   <div key={idx} className="border-l-4 border-black pl-6 py-2">
@@ -156,3 +156,4 @@ export default function Home() {
     </main>
   );
 }
+

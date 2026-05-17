@@ -14,7 +14,7 @@ type DashboardData = {
 
 const STAGES = [
   { id: 'paid', label: 'Order Paid', icon: '💰' },
-  { id: 'hub_received', label: 'At Philly Hub', icon: '🏢' },
+  { id: 'hub_received', label: 'At US Hub', icon: '🏢' },
   { id: 'in_transit', label: 'In Transit', icon: '✈️' },
   { id: 'ready_for_pickup', label: 'Ready in Ghana', icon: '🇬🇭' },
   { id: 'delivered', label: 'Delivered', icon: '✅' },
@@ -262,3 +262,4 @@ export default function TrackingPage() {
     </Suspense>
   );
 }
+

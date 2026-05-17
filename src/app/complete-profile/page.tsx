@@ -141,7 +141,7 @@ function CompleteProfileContent() {
               className="rounded-none border-gray-300 focus:border-yellow-400"
             />
             <p className="text-gray-400 text-[10px] mt-2 leading-relaxed">
-              We send your Delaware/Philly landed cost quotes, customs status changes, and MoMo receipt alerts here.
+              We send your US-to-Ghana landed cost quotes, customs status changes, and MoMo receipt alerts here.
             </p>
           </div>
 
@@ -165,3 +165,4 @@ export default function CompleteProfilePage() {
     </Suspense>
   );
 }
+

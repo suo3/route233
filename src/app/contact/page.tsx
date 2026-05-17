@@ -13,17 +13,17 @@ export default function ContactPage() {
           <div>
             <h1 className="text-5xl font-bold text-black mb-8 tracking-tight">Get in Touch</h1>
             <p className="text-xl text-gray-600 mb-12 leading-relaxed">
-              Have questions about a specific car part or sourcing electronics? Our teams in Philly and Accra are ready to help.
+              Have questions about a specific car part or sourcing electronics? Our teams in the US and Accra are ready to help.
             </p>
 
             <div className="space-y-10">
               <div className="flex gap-6">
                 <div className="w-14 h-14 border border-gray-200 flex items-center justify-center text-2xl">📍</div>
                 <div>
-                  <h4 className="font-bold text-black mb-1">Philadelphia Hub</h4>
+                  <h4 className="font-bold text-black mb-1">US Sourcing Hub</h4>
                   <p className="text-gray-500 text-sm leading-relaxed">
                     Logistics & Verification Center<br />
-                    West Philadelphia, PA 19104
+                    United States of America
                   </p>
                 </div>
               </div>

@@ -110,8 +110,9 @@ export const notify = {
     sendWhatsAppMessage(customerPhone, `💰 Your quote is ready! Landed Cost: ${quoteAmount} GHS. View details and pay here: https://www.233logistics.com/quotes/${quoteId}`),
   
   paymentSuccess: (customerPhone: string, trackingNum: string) =>
-    sendWhatsAppMessage(customerPhone, `✅ Payment Received! Your item is now being processed at our Philly Hub. Tracking: ${trackingNum || 'Pending'}`),
+    sendWhatsAppMessage(customerPhone, `✅ Payment Received! Your item is now being processed at our US Hub. Tracking: ${trackingNum || 'Pending'}`),
   
   statusUpdate: (customerPhone: string, status: string, location: string) =>
     sendWhatsAppMessage(customerPhone, `🚚 Shipment Update: Your item is now "${status}" at ${location}. View your Digital Locker for details.`),
 };
+

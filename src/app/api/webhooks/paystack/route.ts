@@ -38,7 +38,7 @@ export async function POST(request: Request) {
         .insert([{
           quote_id: quoteId,
           status: 'paid',
-          current_location: 'Philadelphia Hub'
+          current_location: 'US Hub'
         }]);
 
       if (shipmentError) throw shipmentError;
@@ -58,3 +58,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+

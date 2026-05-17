@@ -8,7 +8,7 @@ const font = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "233 Logistics | Professional USA to Ghana Sourcing & Logistics",
-  description: "Your personal sourcing agent in the United States. We find, verify, and ship car parts and electronics from Philly/Delaware to Ghana.",
+  description: "Your personal sourcing agent in the United States. We find, verify, and ship car parts and electronics from the USA to Ghana.",
 };
 
 export default function RootLayout({
@@ -29,3 +29,4 @@ export default function RootLayout({
     </html>
   );
 }
+

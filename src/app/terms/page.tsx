@@ -42,7 +42,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-bold text-black mb-4">4. Shipping and Verification</h2>
             <p>
-              Every item is physically inspected at our Philadelphia Hub. We verify that the item matches your request and is in the condition described by the seller. If an item arrives at our hub damaged or incorrect, we will handle the US-side return and notify you immediately.
+              Every item is physically inspected at our US Hub. We verify that the item matches your request and is in the condition described by the seller. If an item arrives at our hub damaged or incorrect, we will handle the US-side return and notify you immediately.
             </p>
           </section>
 
@@ -64,3 +64,4 @@ export default function TermsPage() {
     </main>
   );
 }
+
