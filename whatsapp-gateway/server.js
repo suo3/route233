@@ -1,5 +1,5 @@
 const express = require('express');
-const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
+const { default: makeWASocket, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion } = require('@whiskeysockets/baileys');
 const qrcode = require('qrcode-terminal');
 const pino = require('pino');
 const dotenv = require('dotenv');
@@ -21,7 +21,20 @@ async function connectToWhatsApp() {
   console.log('Starting WhatsApp Gateway connection...');
   const { state, saveCreds } = await useMultiFileAuthState(path.join(__dirname, 'auth_info_baileys'));
 
+  // Fetch the latest WhatsApp Web version dynamically to prevent 405 errors
+  let version = [2, 3000, 1017531287]; // Stable fallback version
+  let isLatest = false;
+  try {
+    const latest = await fetchLatestBaileysVersion();
+    version = latest.version;
+    isLatest = latest.isLatest;
+    console.log(`Successfully fetched latest WhatsApp version: ${version.join('.')}, isLatest: ${isLatest}`);
+  } catch (err) {
+    console.warn('Failed to fetch latest WhatsApp version dynamically, using stable fallback:', err.message);
+  }
+
   sock = makeWASocket({
+    version,
     auth: state,
     printQRInTerminal: false, // We will custom print it with qrcode-terminal
     logger: pino({ level: 'silent' }), // Keep logs clean
