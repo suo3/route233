@@ -8,6 +8,7 @@ interface QuoteModalProps {
   inquiry: {
     id: string;
     description: string;
+    route233_quotes?: any[];
   } | null;
   onClose: () => void;
   onSuccess: () => void;
@@ -38,12 +39,35 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
         .eq('key', 'exchange_rate')
         .single();
       
+      let rate = '12.50';
       if (config?.value) {
-        setFormData(prev => ({ ...prev, exchange_rate: (config.value as any).usd_to_ghs.toString() }));
+        rate = (config.value as any).usd_to_ghs.toString();
+      }
+
+      // Check if there is an existing quote on the inquiry
+      if (inquiry?.route233_quotes && inquiry.route233_quotes.length > 0) {
+        const q = inquiry.route233_quotes[0];
+        setFormData({
+          base_cost_usd: q.base_cost_usd?.toString() || '',
+          shipping_cost_usd: q.shipping_cost_usd?.toString() || '',
+          service_fee_usd: q.service_fee_usd?.toString() || '25.00',
+          customs_estimate_usd: q.customs_estimate_usd?.toString() || '0.00',
+          exchange_rate: q.exchange_rate?.toString() || rate,
+          notes: q.notes || '',
+        });
+      } else {
+        setFormData({
+          base_cost_usd: '',
+          shipping_cost_usd: '',
+          service_fee_usd: '25.00',
+          customs_estimate_usd: '0.00',
+          exchange_rate: rate,
+          notes: '',
+        });
       }
     };
     initData();
-  }, []);
+  }, [inquiry]);
 
   if (!inquiry) return null;
 

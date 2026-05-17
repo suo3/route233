@@ -20,6 +20,7 @@ type Inquiry = {
     full_name: string;
     phone_number: string;
   } | null;
+  route233_quotes?: any[];
 };
 
 type Shipment = {
@@ -171,6 +172,15 @@ export default function AdminDashboard() {
           route233_profiles (
             full_name,
             phone_number
+          ),
+          route233_quotes (
+            id,
+            base_cost_usd,
+            shipping_cost_usd,
+            service_fee_usd,
+            customs_estimate_usd,
+            exchange_rate,
+            notes
           )
         `)
         .order('created_at', { ascending: false });

@@ -69,9 +69,18 @@ function TrackingContent() {
           .order('last_updated', { ascending: false })
       ]);
 
+      const rawQuotes = quotesRes.data || [];
+      const uniqueQuotesMap = new Map();
+      rawQuotes.forEach(q => {
+        if (q.inquiry_id && !uniqueQuotesMap.has(q.inquiry_id)) {
+          uniqueQuotesMap.set(q.inquiry_id, q);
+        }
+      });
+      const uniqueQuotes = Array.from(uniqueQuotesMap.values());
+
       setData({
         inquiries: inquiriesRes.data || [],
-        quotes: quotesRes.data || [],
+        quotes: uniqueQuotes,
         shipments: shipmentsRes.data || []
       });
     } catch (err) {

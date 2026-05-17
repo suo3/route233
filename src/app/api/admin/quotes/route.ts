@@ -24,17 +24,23 @@ export async function POST(request: Request) {
     const rate = exchange_rate || 13.50; // Default or provided rate
     const total_ghs = total_usd * rate;
 
-    const friendly_id = `QT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-
     // Start a transaction-like flow (Supabase RPC or sequential calls)
-    // 1. Create the quote
-    const { data: quote, error: quoteError } = await adminSupabase
+    // 1. Check if a quote already exists for this inquiry
+    const { data: existingQuote } = await adminSupabase
       .from('route233_quotes')
-      .insert([
-        {
-          inquiry_id,
+      .select('id, friendly_id')
+      .eq('inquiry_id', inquiry_id)
+      .maybeSingle();
+
+    let quote;
+    let quoteError;
+
+    if (existingQuote) {
+      // Update the existing quote
+      const { data: updatedQuote, error: updateError } = await adminSupabase
+        .from('route233_quotes')
+        .update({
           admin_id,
-          friendly_id,
           base_cost_usd,
           shipping_cost_usd,
           service_fee_usd,
@@ -42,10 +48,38 @@ export async function POST(request: Request) {
           exchange_rate: rate,
           total_ghs: total_ghs,
           notes
-        }
-      ])
-      .select()
-      .single();
+        })
+        .eq('id', existingQuote.id)
+        .select()
+        .single();
+      
+      quote = updatedQuote;
+      quoteError = updateError;
+    } else {
+      // Create a new quote
+      const friendly_id = `QT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const { data: insertedQuote, error: insertError } = await adminSupabase
+        .from('route233_quotes')
+        .insert([
+          {
+            inquiry_id,
+            admin_id,
+            friendly_id,
+            base_cost_usd,
+            shipping_cost_usd,
+            service_fee_usd,
+            customs_estimate_usd,
+            exchange_rate: rate,
+            total_ghs: total_ghs,
+            notes
+          }
+        ])
+        .select()
+        .single();
+      
+      quote = insertedQuote;
+      quoteError = insertError;
+    }
 
     if (quoteError) throw quoteError;
 
