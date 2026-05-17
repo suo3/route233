@@ -35,7 +35,13 @@ function LoginContent() {
     });
 
     if (error) {
-      setMessage(error.message);
+      let friendlyError = error.message;
+      if (error.message?.toLowerCase().includes('invalid login credentials') || error.message?.toLowerCase().includes('invalid credentials')) {
+        friendlyError = "We couldn't find an account matching those details. Please check your email or password, or sign up if you don't have an account!";
+      } else if (error.message?.toLowerCase().includes('email not confirmed') || error.message?.toLowerCase().includes('email not verified')) {
+        friendlyError = "Please verify your email address. We sent a confirmation link to your inbox—please check your email (and spam folder) to activate your account.";
+      }
+      setMessage(friendlyError);
     } else if (user) {
       console.log('Login successful for:', user.email);
       

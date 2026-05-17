@@ -19,6 +19,10 @@ export async function sendWhatsAppMessage(to: string, message: string) {
   let cleanPhone = to.replace(/[^0-9]/g, '');
   if (cleanPhone.startsWith('0') && cleanPhone.length === 10) {
     cleanPhone = `233${cleanPhone.slice(1)}`; // Ghana local format
+  } else if (cleanPhone.length === 10 && !cleanPhone.startsWith('1')) {
+    cleanPhone = `1${cleanPhone}`; // US local 10-digit format
+  } else if (cleanPhone.length === 9) {
+    cleanPhone = `233${cleanPhone}`; // 9-digit Ghana number format
   }
 
   // Option 1: Custom Cloud Gateway (Baileys service on Render/Railway)

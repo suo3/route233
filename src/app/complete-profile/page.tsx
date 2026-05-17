@@ -63,7 +63,14 @@ function CompleteProfileContent() {
       });
 
     if (profileError) {
-      setError(profileError.message);
+      console.error('Profile creation error:', profileError);
+      let userFriendlyMsg = 'We encountered a small problem setting up your profile. Please check your connection and try again, or contact our support team.';
+      
+      if (profileError.message?.toLowerCase().includes('policy') || profileError.message?.toLowerCase().includes('permission')) {
+        userFriendlyMsg = 'Session expired or insufficient permissions. Please try logging out and logging back in.';
+      }
+      
+      setError(userFriendlyMsg);
       setLoading(false);
       return;
     }

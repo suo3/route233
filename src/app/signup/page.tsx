@@ -33,7 +33,15 @@ export default function SignupPage() {
     });
 
     if (authError) {
-      setMessage(authError.message);
+      let friendlyAuthMsg = authError.message;
+      if (authError.message?.toLowerCase().includes('already registered') || authError.message?.toLowerCase().includes('already exists')) {
+        friendlyAuthMsg = 'An account with this email address already exists. Please try signing in instead.';
+      } else if (authError.message?.toLowerCase().includes('password should be')) {
+        friendlyAuthMsg = 'Passwords must be at least 6 characters long for your security.';
+      } else if (authError.message?.toLowerCase().includes('invalid email')) {
+        friendlyAuthMsg = 'Please enter a valid email address.';
+      }
+      setMessage(friendlyAuthMsg);
       setLoading(false);
       return;
     }
@@ -51,6 +59,7 @@ export default function SignupPage() {
       
       if (profileError) {
         console.error('Profile creation error:', profileError);
+        setMessage('Your account was created successfully, but we had a small problem configuring WhatsApp tracking. You can link your phone inside your Locker settings once you sign in!');
       }
 
       if (data.session) {

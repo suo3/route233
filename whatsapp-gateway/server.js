@@ -180,6 +180,10 @@ app.post('/send', authenticate, async (req, res) => {
     let cleanPhone = to.replace(/[^0-9]/g, '');
     if (cleanPhone.startsWith('0') && cleanPhone.length === 10) {
       cleanPhone = `233${cleanPhone.slice(1)}`; // Ghana formatting
+    } else if (cleanPhone.length === 10 && !cleanPhone.startsWith('1')) {
+      cleanPhone = `1${cleanPhone}`; // US local 10-digit format
+    } else if (cleanPhone.length === 9) {
+      cleanPhone = `233${cleanPhone}`; // 9-digit Ghana number format
     }
 
     const jid = `${cleanPhone}@s.whatsapp.net`;
