@@ -19,6 +19,7 @@ export async function POST(
         *,
         route233_inquiries (
           customer_id,
+          contact_email,
           route233_profiles (
             full_name
           )
@@ -30,8 +31,8 @@ export async function POST(
     if (quoteError || !quote) throw new Error('Quote not found');
 
     // 2. Initialize Paystack
-    // For demo purposes, we'll use a placeholder email. In a real app, get it from the profile.
-    const email = 'customer@example.com';
+    const inquiry = quote.route233_inquiries as any;
+    const email = inquiry?.contact_email || 'customer@example.com';
     const amountGHS = quote.total_ghs;
 
     const paystackSession = await initializePayment(email, amountGHS, quote.id);

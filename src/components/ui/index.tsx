@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'danger';
+  variant?: 'primary' | 'secondary' | 'accent' | 'outline' | 'danger';
   isLoading?: boolean;
 }
 
-export const Button = ({ variant = 'primary', isLoading, children, className, ...props }: ButtonProps) => {
+export const Button = ({ variant = 'primary', isLoading, children, className = '', ...props }: ButtonProps) => {
   const baseStyles = "px-6 py-3 font-bold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center border";
   const variants = {
     primary: "bg-black text-white hover:bg-gray-800 border-black active:scale-[0.98]",
@@ -34,15 +34,17 @@ export const Button = ({ variant = 'primary', isLoading, children, className, ..
   );
 };
 
-export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
+export const Input = ({ className = '', ...props }: React.InputHTMLAttributes<HTMLInputElement>) => (
   <input 
     {...props} 
-    className={`w-full px-4 py-3 bg-white text-black border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all ${props.className}`}
+    className={`w-full px-4 py-3 bg-white text-black border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all ${className}`}
   />
 );
 
-export const Label = ({ children }: { children: React.ReactNode }) => (
-  <label className="block text-sm font-bold text-black mb-2 uppercase tracking-wider">
+interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {}
+
+export const Label = ({ children, className = '', ...props }: LabelProps) => (
+  <label className={`block text-[10px] uppercase tracking-wider mb-2 font-bold text-black ${className}`} {...props}>
     {children}
   </label>
 );

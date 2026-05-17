@@ -105,7 +105,7 @@ export async function POST(request: Request) {
         await notify.quoteReady(
           customerPhone,
           total_ghs.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-          friendly_id || quote.id
+          quote?.friendly_id || quote?.id || ''
         );
         console.log(`WhatsApp quote alert successfully sent to ${customerPhone}`);
       } else {

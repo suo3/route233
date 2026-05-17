@@ -1,10 +1,18 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase/client';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    // In a real app, you would get the customer_id from the auth session
-    const customer_id = 'd290f1ee-6c54-4b01-90e6-d701748f0851'; // Placeholder
+    let customer_id = 'd290f1ee-6c54-4b01-90e6-d701748f0851'; // Fallback Placeholder for backward compatibility/demo
+
+    const authHeader = request.headers.get('Authorization');
+    if (authHeader) {
+      const token = authHeader.replace('Bearer ', '');
+      const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+      if (user && !authError) {
+        customer_id = user.id;
+      }
+    }
 
     const { data, error } = await supabase
       .from('route233_shipments')
@@ -13,6 +21,7 @@ export async function GET() {
         route233_quotes (
           *,
           route233_inquiries (
+            customer_id,
             description,
             images
           )
@@ -22,7 +31,7 @@ export async function GET() {
 
     if (error) throw error;
 
-    // Filter by customer_id (since RLS might not be fully configured for this specific join yet)
+    // Filter by customer_id
     const customerShipments = data?.filter(s => s.route233_quotes?.route233_inquiries?.customer_id === customer_id);
 
     return NextResponse.json({ success: true, data: customerShipments });

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getAdminClient } from '@/lib/supabase/client';
 import { verifySignature } from '@/lib/paystack';
+import { notify } from '@/lib/notifications';
 
 export async function POST(request: Request) {
   try {
@@ -43,10 +44,37 @@ export async function POST(request: Request) {
 
       if (shipmentError) throw shipmentError;
 
-      // 3. Update inquiry status to 'approved' (since it's now paid)
-      const { data: quote } = await adminSupabase.from('route233_quotes').select('inquiry_id').eq('id', quoteId).single();
+      // 3. Update quote status and inquiry status to 'approved' (since it's now paid)
+      await adminSupabase.from('route233_quotes').update({ status: 'approved' }).eq('id', quoteId);
+      
+      const { data: quote } = await adminSupabase
+        .from('route233_quotes')
+        .select(`
+          inquiry_id,
+          route233_inquiries (
+            contact_phone,
+            route233_profiles (
+              phone_number
+            )
+          )
+        `)
+        .eq('id', quoteId)
+        .single();
+
       if (quote) {
         await adminSupabase.from('route233_inquiries').update({ status: 'approved' }).eq('id', quote.inquiry_id);
+
+        // 4. Trigger WhatsApp Payment Received alert to the Customer
+        try {
+          const inquiry = quote.route233_inquiries as any;
+          const customerPhone = inquiry?.contact_phone || inquiry?.route233_profiles?.phone_number;
+          if (customerPhone) {
+            await notify.paymentSuccess(customerPhone, '');
+            console.log(`WhatsApp payment success alert successfully sent to ${customerPhone}`);
+          }
+        } catch (notifyErr) {
+          console.error('Failed to trigger WhatsApp payment success notification:', notifyErr);
+        }
       }
 
       console.log(`Payment processed for quote ${quoteId}`);

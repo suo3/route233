@@ -21,6 +21,7 @@ type Inquiry = {
     phone_number: string;
   } | null;
   route233_quotes?: any[];
+  images?: string[];
 };
 
 type Shipment = {
