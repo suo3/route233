@@ -52,7 +52,12 @@ function ProfileContent() {
         });
       }
     } catch (err: any) {
-      console.error('Error fetching profile:', err.message);
+      console.error('Error fetching profile:', err);
+      let userFriendly = 'We had trouble loading your profile details. Please try refreshing the page.';
+      if (err.message && (err.message.toLowerCase().includes('schema cache') || err.message.toLowerCase().includes('column'))) {
+        userFriendly = 'Our profile system is undergoing minor maintenance. Please refresh the page in a moment.';
+      }
+      setMessage({ text: userFriendly, type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -91,7 +96,18 @@ function ProfileContent() {
 
       setMessage({ text: 'Profile updated successfully!', type: 'success' });
     } catch (err: any) {
-      setMessage({ text: err.message || 'Failed to update profile', type: 'error' });
+      console.error('Profile update error:', err);
+      let userFriendly = 'Failed to update profile. Please check your network and try again.';
+      if (err.message) {
+        if (err.message.toLowerCase().includes('schema cache') || err.message.toLowerCase().includes('column')) {
+          userFriendly = 'Our database is undergoing minor updates. Please wait a moment and try saving again.';
+        } else if (err.message.toLowerCase().includes('policy') || err.message.toLowerCase().includes('permission')) {
+          userFriendly = 'Your session may have expired. Please try logging out and logging back in.';
+        } else {
+          userFriendly = err.message;
+        }
+      }
+      setMessage({ text: userFriendly, type: 'error' });
     } finally {
       setSaving(false);
     }

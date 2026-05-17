@@ -126,7 +126,18 @@ export default function AdminDashboard() {
       if (!json.success) throw new Error(json.error);
       fetchUsers();
     } catch (err: any) {
-      alert('Failed to add user: ' + err.message);
+      console.error('Failed to add user:', err);
+      let userFriendly = 'Could not create the user account. Please check the connection and try again.';
+      if (err.message) {
+        if (err.message.toLowerCase().includes('already registered') || err.message.toLowerCase().includes('already exists')) {
+          userFriendly = 'An account with this email address already exists.';
+        } else if (err.message.toLowerCase().includes('password should be')) {
+          userFriendly = 'Password must be at least 6 characters long for security.';
+        } else {
+          userFriendly = err.message;
+        }
+      }
+      alert('Unable to Create Account: ' + userFriendly);
     }
   };
 
