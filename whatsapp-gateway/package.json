@@ -1,0 +1,16 @@
+{
+  "name": "whatsapp-gateway",
+  "version": "1.0.0",
+  "description": "Lightweight, cloud-hosted WhatsApp API Gateway using Baileys",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.6.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "pino": "^9.0.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}
