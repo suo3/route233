@@ -185,7 +185,7 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
             <textarea 
               value={formData.notes}
               onChange={e => setFormData({...formData, notes: e.target.value})}
-              placeholder="e.g. Sourced from tax-free US warehouse, zero sales tax applied."
+              placeholder="e.g. Sourced from US hub, quality check completed."
               className="w-full px-4 py-3 bg-white border border-gray-300 rounded-none focus:outline-none focus:ring-1 focus:ring-black focus:border-black text-black transition-all text-sm"
               rows={3}
             />
@@ -204,4 +204,5 @@ export default function QuoteModal({ inquiry, onClose, onSuccess }: QuoteModalPr
     </div>
   );
 }
+
 

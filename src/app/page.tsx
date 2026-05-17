@@ -128,7 +128,7 @@ export default function Home() {
               </h2>
               <div className="space-y-12">
                 {[
-                  { t: "Tax-Free Sourcing", d: "We utilize our tax-free US warehouse to zero out US sales tax, saving you 8-10% upfront on every purchase." },
+                  { t: "Direct US Sourcing", d: "We source directly from trusted US suppliers, securing high-quality items at the best upfront price." },
                   { t: "Physical Quality Control", d: "Every refurbished electronic device and car part is physically inspected at our US hub before it boards a plane." },
                   { t: "Locked-in Cedi Payments", d: "Pay in GHS using Mobile Money. Our high-volume currency hedging means no dollar card hassles and better rates." }
                 ].map((item, idx) => (
@@ -156,4 +156,5 @@ export default function Home() {
     </main>
   );
 }
+
 
