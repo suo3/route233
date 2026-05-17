@@ -37,7 +37,7 @@ export const Button = ({ variant = 'primary', isLoading, children, className, ..
 export const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
   <input 
     {...props} 
-    className={`w-full px-4 py-3 bg-white border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all ${props.className}`}
+    className={`w-full px-4 py-3 bg-white text-black border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all ${props.className}`}
   />
 );
 

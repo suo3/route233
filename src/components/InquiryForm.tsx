@@ -13,6 +13,7 @@ export default function InquiryForm() {
   const [isAnonymous, setIsAnonymous] = useState(true);
   const [category, setCategory] = useState<Category>('general');
   const [result, setResult] = useState<{ success: boolean; message?: string; reason?: string } | null>(null);
+  const [images, setImages] = useState<{ file: File; previewUrl: string }[]>([]);
 
   // Check login status on mount
   useEffect(() => {
@@ -21,13 +22,38 @@ export default function InquiryForm() {
     });
   }, []);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files).map(file => ({
+        file,
+        previewUrl: URL.createObjectURL(file)
+      }));
+      setImages(prev => [...prev, ...newFiles]);
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImages(prev => {
+      const updated = [...prev];
+      URL.revokeObjectURL(updated[index].previewUrl);
+      updated.splice(index, 1);
+      return updated;
+    });
+  };
+
+  // Clean up object URLs on unmount to prevent leaks
+  useEffect(() => {
+    return () => {
+      images.forEach(img => URL.revokeObjectURL(img.previewUrl));
+    };
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setResult(null);
 
     const formData = new FormData(e.currentTarget);
-    const files = formData.getAll('images') as File[];
     const imageUrls: string[] = [];
 
     try {
@@ -41,8 +67,9 @@ export default function InquiryForm() {
         throw new Error('Please provide an email or phone number so we can contact you with the quote.');
       }
 
-      // 1. Upload images to Supabase Storage
-      for (const file of files) {
+      // 1. Upload images to Supabase Storage from state
+      for (const item of images) {
+        const file = item.file;
         if (file.size > 0) {
           const fileExt = file.name.split('.').pop();
           const fileName = `${Math.random()}.${fileExt}`;
@@ -85,6 +112,10 @@ export default function InquiryForm() {
       }
 
       if (json.success) {
+        // Clear preview URLs and state
+        images.forEach(img => URL.revokeObjectURL(img.previewUrl));
+        setImages([]);
+
         if (!customer_id) {
             setResult({ success: true, message: 'Request received! We will contact you via your provided email or phone with your quote.'});
             (e.target as HTMLFormElement).reset();
@@ -196,14 +227,45 @@ export default function InquiryForm() {
           <div className="space-y-1">
             <Label className="text-[10px] uppercase">Reference Photos</Label>
             <div className="relative border-2 border-gray-200 border-dashed bg-gray-50 hover:bg-gray-100 transition-colors p-4 text-center">
-              <input name="images" type="file" multiple className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*" />
+              <input 
+                name="images" 
+                type="file" 
+                multiple 
+                onChange={handleFileChange}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                accept="image/*" 
+              />
               <div className="flex items-center justify-center gap-3">
                 <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <p className="text-xs text-gray-500 font-bold uppercase">Tap to upload photos</p>
+                <p className="text-xs text-gray-500 font-bold uppercase">
+                  {images.length > 0 ? `Add more photos (${images.length} added)` : 'Tap to upload photos'}
+                </p>
               </div>
             </div>
+
+            {images.length > 0 && (
+              <div className="grid grid-cols-4 gap-4 mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                {images.map((img, idx) => (
+                  <div key={idx} className="relative aspect-square border border-gray-200 bg-gray-100 group overflow-hidden">
+                    <img 
+                      src={img.previewUrl} 
+                      alt={`Preview ${idx + 1}`} 
+                      className="w-full h-full object-cover transition-transform group-hover:scale-105" 
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(idx)}
+                      className="absolute top-1 right-1 w-6 h-6 bg-black/80 hover:bg-black text-white flex items-center justify-center text-xs font-bold rounded-full transition-colors active:scale-95"
+                      title="Remove image"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <Button type="submit" isLoading={loading} className="w-full py-4 text-sm font-bold bg-black text-white hover:bg-gray-800 rounded-none border-none uppercase tracking-widest">

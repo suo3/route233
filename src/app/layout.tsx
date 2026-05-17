@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Navbar, Footer } from "@/components/SiteShell";
+import { OnboardingCheck } from "@/components/OnboardingCheck";
 
 const font = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <body className={`${font.className} min-h-full flex flex-col bg-white`} suppressHydrationWarning>
+        <OnboardingCheck />
         <Navbar />
         <div className="flex-grow pt-20">
           {children}
