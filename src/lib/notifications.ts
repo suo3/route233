@@ -103,8 +103,10 @@ export async function sendWhatsAppMessage(to: string, message: string) {
 
 // Pre-defined notification triggers
 export const notify = {
-  newInquiry: (adminPhone: string, inquiryDesc: string) => 
-    sendWhatsAppMessage(adminPhone, `🚀 New Sourcing Request: "${inquiryDesc}". Check your admin dashboard.`),
+  newInquiry: (inquiryDesc: string, adminPhoneOverride?: string) => {
+    const adminPhone = adminPhoneOverride || process.env.ADMIN_WHATSAPP_NUMBER || '0244000000';
+    return sendWhatsAppMessage(adminPhone, `🚀 New Sourcing Request: "${inquiryDesc}". Check your admin dashboard.`);
+  },
   
   quoteReady: (customerPhone: string, quoteAmount: string, quoteId: string) =>
     sendWhatsAppMessage(customerPhone, `💰 Your quote is ready! Landed Cost: ${quoteAmount} GHS. View details and pay here: https://www.233logistics.com/quotes/${quoteId}`),

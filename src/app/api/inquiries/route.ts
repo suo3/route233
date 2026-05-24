@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     }
 
     // Trigger admin notification for successful pending inquiry
-    await notify.newInquiry('0244000000', description); // Admin notification
+    await notify.newInquiry(description); // Admin notification
 
     return NextResponse.json({ success: true, data });
   } catch (error: any) {
