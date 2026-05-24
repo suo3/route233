@@ -35,9 +35,26 @@ export async function POST(
     const email = inquiry?.contact_email || 'customer@example.com';
     const amountGHS = quote.total_ghs;
 
+    const paystackSecret = process.env.PAYSTACK_SECRET_KEY!;
+    const isMockKey = !paystackSecret || paystackSecret.startsWith('YOUR_PAYSTACK_SECRET');
+
+    if (isMockKey) {
+      return NextResponse.json({ 
+        success: true, 
+        authorization_url: `/quotes/${quote.friendly_id}/pay/mock` 
+      });
+    }
+
     const paystackSession = await initializePayment(email, amountGHS, quote.id);
 
     if (!paystackSession.status) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('Paystack init failed (invalid key or offline). Falling back to mock checkout simulator.');
+        return NextResponse.json({ 
+          success: true, 
+          authorization_url: `/quotes/${quote.friendly_id}/pay/mock` 
+        });
+      }
       throw new Error(paystackSession.message || 'Paystack initialization failed');
     }
 
