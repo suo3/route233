@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { NextResponse } from 'next/server';
 import { getAdminClient } from '@/lib/supabase/client';
 import { verifySignature } from '@/lib/paystack';
