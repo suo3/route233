@@ -1,0 +1,3 @@
+name = "233logistics"
+compatibility_date = "2024-05-17"
+compatibility_flags = ["nodejs_compat"]
