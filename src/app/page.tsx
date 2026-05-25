@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Hero Section - Uber Style */}
-      <section className="pt-32 pb-40 px-6 bg-black relative">
+      <section className="pt-24 pb-28 md:pt-32 md:pb-40 px-6 bg-black relative">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <div className="animate-in fade-in duration-700">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-white rounded-sm text-[10px] font-bold uppercase tracking-wider mb-8">
@@ -85,7 +85,7 @@ export default function Home() {
       </section>
 
       {/* How it Works - Minimalist Grid */}
-      <section className="py-32 bg-white border-b border-gray-200">
+      <section className="py-16 md:py-32 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-20">
             <h2 className="text-4xl md:text-5xl font-bold text-black mb-6 tracking-tight">Zero friction sourcing.</h2>
@@ -125,7 +125,7 @@ export default function Home() {
       </section>
 
       {/* Deep Dive Section */}
-      <section className="py-32 bg-gray-50">
+      <section className="py-16 md:py-32 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-24 items-center">
             <div>
@@ -146,7 +146,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-black p-16 text-white h-full flex flex-col justify-center">
+            <div className="bg-black p-8 md:p-16 text-white h-full flex flex-col justify-center">
               <h3 className="text-5xl font-bold mb-8 leading-tight tracking-tight">Ready to upgrade your sourcing pipeline?</h3>
               <p className="text-gray-400 mb-12 text-xl leading-relaxed font-normal">Join the hundreds of Ghanaians who have stopped relying on family members abroad and started using a professional logistics pipeline.</p>
               
