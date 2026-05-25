@@ -1,9 +1,25 @@
-import crypto from 'crypto';
-
-export function verifySignature(body: string, signature: string | null) {
+export async function verifySignature(body: string, signature: string | null) {
   if (!signature) return false;
   const paystackSecret = process.env.PAYSTACK_SECRET_KEY!;
-  const hash = crypto.createHmac('sha512', paystackSecret).update(body).digest('hex');
+  
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(paystackSecret),
+    { name: 'HMAC', hash: 'SHA-512' },
+    false,
+    ['sign']
+  );
+  
+  const signatureBuffer = await crypto.subtle.sign(
+    'HMAC',
+    key,
+    encoder.encode(body)
+  );
+  
+  const hashArray = Array.from(new Uint8Array(signatureBuffer));
+  const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  
   return hash === signature;
 }
 

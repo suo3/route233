@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
     if (isMockRequest && isMockKey) {
       console.log('Bypassing webhook signature verification for local mock payment testing.');
-    } else if (!verifySignature(textBody, signature)) {
+    } else if (!(await verifySignature(textBody, signature))) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
