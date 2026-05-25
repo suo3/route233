@@ -105,7 +105,13 @@ export default function InquiryForm() {
         body: JSON.stringify(data),
       });
 
-      const json = await res.json();
+      let json;
+      const textResponse = await res.text();
+      try {
+        json = JSON.parse(textResponse);
+      } catch (e) {
+        throw new Error(res.ok ? 'Failed to parse response' : 'Internal Server Error. Our team has been notified.');
+      }
       
       if (!res.ok) {
         throw new Error(json.error || 'Failed to submit request. Please try again.');

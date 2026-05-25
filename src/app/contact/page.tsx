@@ -29,7 +29,14 @@ export default function ContactPage() {
         }),
       });
 
-      const data = await res.json();
+      let data;
+      const textResponse = await res.text();
+      try {
+        data = JSON.parse(textResponse);
+      } catch (e) {
+        throw new Error('Server error: unable to send message right now.');
+      }
+      
       if (!res.ok) throw new Error(data.error || data.message || 'Failed to send message');
 
       setResult({ success: true, message: 'Message sent successfully! We will get back to you soon on WhatsApp.' });

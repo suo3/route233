@@ -3,16 +3,14 @@
  * Handles WhatsApp alerts for both Admins and Customers.
  */
 
-const WHATSAPP_API_URL = process.env.WHATSAPP_API_URL;
-const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
-
-const GREEN_API_INSTANCE_ID = process.env.GREEN_API_INSTANCE_ID;
-const GREEN_API_TOKEN = process.env.GREEN_API_TOKEN;
-
-const WHATSAPP_GATEWAY_URL = process.env.WHATSAPP_GATEWAY_URL;
-const WHATSAPP_GATEWAY_KEY = process.env.WHATSAPP_GATEWAY_KEY;
-
 export async function sendWhatsAppMessage(to: string, message: string) {
+  const WHATSAPP_API_URL = process.env.WHATSAPP_API_URL;
+  const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
+  const GREEN_API_INSTANCE_ID = process.env.GREEN_API_INSTANCE_ID;
+  const GREEN_API_TOKEN = process.env.GREEN_API_TOKEN;
+  const WHATSAPP_GATEWAY_URL = process.env.WHATSAPP_GATEWAY_URL;
+  const WHATSAPP_GATEWAY_KEY = process.env.WHATSAPP_GATEWAY_KEY;
+
   console.log(`[WhatsApp Notification] To: ${to}, Message: ${message}`);
 
   // Format the phone number for WhatsApp
