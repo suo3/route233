@@ -1,5 +1,11 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { Button } from '@/components/ui';
+
+export const metadata: Metadata = {
+  title: "233 Logistics | US to Ghana Shipping",
+  description: "Find, verify, and ship auto parts and electronics from the United States to Ghana. One landed cost. No hidden fees.",
+};
 
 export default function Home() {
   return (

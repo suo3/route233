@@ -31,7 +31,7 @@ export default function ContactPage() {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || data.message || 'Failed to send message');
-      
+
       setResult({ success: true, message: 'Message sent successfully! We will get back to you soon on WhatsApp.' });
       (e.target as HTMLFormElement).reset();
     } catch (err: any) {
@@ -47,7 +47,7 @@ export default function ContactPage() {
         <Link href="/" className="inline-flex items-center text-sm font-bold text-gray-500 hover:text-black transition-colors mb-12 group">
           <span className="mr-2 group-hover:-translate-x-1 transition-transform">←</span> Back to Home
         </Link>
-        
+
         <div className="grid lg:grid-cols-2 gap-20">
           <div>
             <h1 className="text-5xl font-bold text-black mb-8 tracking-tight">Get in Touch</h1>
@@ -83,7 +83,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="font-bold text-black mb-1">WhatsApp Business</h4>
                   <p className="text-gray-500 text-sm leading-relaxed">
-                    +233 24 400 0000<br />
+                    +233 53 666 9982<br />
                     Mon - Sat, 9am - 6pm GMT
                   </p>
                 </div>
@@ -93,7 +93,7 @@ export default function ContactPage() {
 
           <div className="bg-white p-12 border border-gray-200">
             <h3 className="text-2xl font-bold text-black mb-8">Send us a message</h3>
-            
+
             {result && (
               <div className={`mb-6 p-4 border ${result.success ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
                 <p className="font-bold text-sm">{result.message}</p>
@@ -111,7 +111,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <Label>How can we help?</Label>
-                <textarea 
+                <textarea
                   name="message"
                   required
                   className="w-full px-4 py-3 bg-white border border-gray-300 rounded-none focus:outline-none focus:ring-1 focus:ring-black focus:border-black text-black transition-all"

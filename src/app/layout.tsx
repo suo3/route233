@@ -7,8 +7,25 @@ import { OnboardingCheck } from "@/components/OnboardingCheck";
 const font = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "233 Logistics | Professional USA to Ghana Sourcing & Logistics",
+  metadataBase: new URL('https://233logistics.com'),
+  title: {
+    default: "233 Logistics | Professional USA to Ghana Sourcing & Logistics",
+    template: "%s | 233 Logistics"
+  },
   description: "Your personal sourcing agent in the United States. We find, verify, and ship car parts and electronics from the USA to Ghana.",
+  openGraph: {
+    title: "233 Logistics | Professional USA to Ghana Sourcing & Logistics",
+    description: "Your personal sourcing agent in the United States. We find, verify, and ship car parts and electronics from the USA to Ghana.",
+    url: "https://233logistics.com",
+    siteName: "233 Logistics",
+    locale: "en_GH",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "233 Logistics | Professional USA to Ghana Sourcing & Logistics",
+    description: "Your personal sourcing agent in the United States. We find, verify, and ship car parts and electronics from the USA to Ghana.",
+  },
 };
 
 export default function RootLayout({

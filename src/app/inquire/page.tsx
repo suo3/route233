@@ -1,5 +1,11 @@
+import { Metadata } from 'next';
 import InquiryForm from '@/components/InquiryForm';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: "Request a Sourcing Quote",
+  description: "Provide an Amazon, eBay, or vehicle link. We will give you a guaranteed GHS landed cost for shipping to Ghana.",
+};
 
 export default function InquirePage() {
   return (
