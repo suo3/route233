@@ -25,6 +25,7 @@ export default function SignupPage() {
       email,
       password,
       options: {
+        emailRedirectTo: `${window.location.origin}/track`,
         data: {
           full_name: fullName,
           phone_number: phone,
