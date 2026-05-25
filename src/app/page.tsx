@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Hero Section - Uber Style */}
-      <section className="pt-24 pb-16 md:pt-32 md:pb-40 px-6 bg-black relative">
+      <section className="pt-[88px] pb-16 md:pt-32 md:pb-40 px-6 bg-black relative">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <div className="animate-in fade-in duration-700">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-white rounded-sm text-[10px] font-bold uppercase tracking-wider mb-6 md:mb-8">
