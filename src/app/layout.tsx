@@ -4,8 +4,16 @@ import "./globals.css";
 import { Navbar, Footer } from "@/components/SiteShell";
 import { OnboardingCheck } from "@/components/OnboardingCheck";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 
 const font = Plus_Jakarta_Sans({ subsets: ["latin"] });
+
+export const viewport = {
+  themeColor: '#ffffff',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://233logistics.com'),
@@ -14,6 +22,11 @@ export const metadata: Metadata = {
     template: "%s | 233 Logistics"
   },
   description: "Your personal sourcing agent in the United States. We find, verify, and ship car parts and electronics from the USA to Ghana.",
+  appleWebApp: {
+    capable: true,
+    title: '233 Logistics',
+    statusBarStyle: 'default',
+  },
   openGraph: {
     title: "233 Logistics | Professional USA to Ghana Sourcing & Logistics",
     description: "Your personal sourcing agent in the United States. We find, verify, and ship car parts and electronics from the USA to Ghana.",
@@ -43,6 +56,7 @@ export default function RootLayout({
           {children}
         </div>
         <Footer />
+        <MobileBottomNav />
         <WhatsAppWidget />
       </body>
     </html>
