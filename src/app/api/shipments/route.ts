@@ -34,7 +34,7 @@ export async function GET(request: Request) {
     if (error) throw error;
 
     // Filter by customer_id
-    const customerShipments = data?.filter(s => s.route233_quotes?.route233_inquiries?.customer_id === customer_id);
+    const customerShipments = data?.filter((s: any) => s.route233_quotes?.route233_inquiries?.customer_id === customer_id);
 
     return NextResponse.json({ success: true, data: customerShipments });
   } catch (error: any) {

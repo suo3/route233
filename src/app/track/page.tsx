@@ -71,7 +71,7 @@ function TrackingContent() {
 
       const rawQuotes = quotesRes.data || [];
       const uniqueQuotesMap = new Map();
-      rawQuotes.forEach(q => {
+      rawQuotes.forEach((q: any) => {
         if (q.inquiry_id && !uniqueQuotesMap.has(q.inquiry_id)) {
           uniqueQuotesMap.set(q.inquiry_id, q);
         }

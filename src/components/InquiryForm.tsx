@@ -17,8 +17,8 @@ export default function InquiryForm() {
 
   // Check login status on mount
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) setIsAnonymous(false);
+    supabase.auth.getUser().then(({ data: { user } }: any) => {
+      if (user) setIsAnonymous(false);
     });
   }, []);
 

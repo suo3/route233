@@ -14,7 +14,7 @@ export function Navbar() {
   useEffect(() => {
     checkUser();
     
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: any, session: any) => {
       if (session?.user) {
         setUser(session.user);
         fetchRole(session.user.id);
@@ -25,7 +25,7 @@ export function Navbar() {
     });
 
     return () => {
-      authListener.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
   }, []);
 

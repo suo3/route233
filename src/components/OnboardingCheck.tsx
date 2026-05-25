@@ -51,7 +51,7 @@ export function OnboardingCheck() {
     checkOnboarding();
 
     // Listen for sign ins to re-trigger check
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: any, session: any) => {
       if (event === 'SIGNED_IN') {
         checkOnboarding();
       }
