@@ -79,7 +79,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="font-bold text-black mb-1">Accra Pickup Point</h4>
                   <p className="text-gray-500 text-sm leading-relaxed">
-                    East Legon, Greater Accra<br />
+                    Tema, Greater Accra<br />
                     Ghana
                   </p>
                 </div>
