@@ -11,19 +11,19 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Hero Section - Uber Style */}
-      <section className="pt-24 pb-28 md:pt-32 md:pb-40 px-6 bg-black relative">
+      <section className="pt-24 pb-16 md:pt-32 md:pb-40 px-6 bg-black relative">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <div className="animate-in fade-in duration-700">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-white rounded-sm text-[10px] font-bold uppercase tracking-wider mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-white rounded-sm text-[10px] font-bold uppercase tracking-wider mb-6 md:mb-8">
               <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
               Operations Active
             </div>
             
-            <h1 className="text-5xl sm:text-6xl font-bold text-white leading-tight tracking-tight mb-8">
+            <h1 className="text-5xl sm:text-6xl font-bold text-white leading-tight tracking-tight mb-6 md:mb-8">
               Sourcing from the US, <br/>made simple.
             </h1>
             
-            <p className="text-xl text-gray-300 mb-12 leading-relaxed max-w-xl font-normal">
+            <p className="text-xl text-gray-300 mb-8 md:mb-12 leading-relaxed max-w-xl font-normal">
               Find, verify, and ship auto parts and electronics from the United States to Ghana. One landed cost. No hidden fees.
             </p>
             
