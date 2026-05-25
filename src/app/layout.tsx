@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Navbar, Footer } from "@/components/SiteShell";
 import { OnboardingCheck } from "@/components/OnboardingCheck";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 const font = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -42,8 +43,8 @@ export default function RootLayout({
           {children}
         </div>
         <Footer />
+        <WhatsAppWidget />
       </body>
     </html>
   );
 }
-
